@@ -7,7 +7,7 @@ $mass   = 70; // massa dalam kilogram
 $height = 180; // tinggi dalam centimeter
 
 $height /= 100; // tinggi dalam meter
-$bmi    = number_format($mass / ($height ** 2), 2); // format number to show just two digits after decimal dot
+$bmi    = number_format($mass / ($height ** 2), 2); // format number to show just two digits after decimal's dot
 
 // reference https://en.wikipedia.org/wiki/Body_mass_index
 if ($bmi < 16.0) {

@@ -20,7 +20,7 @@ function greetPeoples($name, $time)
 }
 
 // step 3
-// using params to set value of side-long to count the square area
+// using params to set value (side-length) to count the square area
 function countSquareArea($side)
 {
     $area = $side * $side;
