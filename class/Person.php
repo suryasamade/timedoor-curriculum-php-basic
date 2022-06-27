@@ -1,7 +1,3 @@
-<!-- SKENARIO -->
-<!-- membuat/menambahkan method, menggunakan $this keyword untuk merujuk sebuah objek -->
-<!-- concatenation types: '{$variable}' -->
-
 <?php
 class Person
 {
@@ -11,12 +7,21 @@ class Person
     var $height;
     var $weight;
     var $waistCircumference;
+    var $standardMeasurement = "WHO";
 
-    public function setNameAgeGender($name, $age, $gender)
+    public function __construct($name, $age, $height, $weight, $waistCircumference, $gender = "M")
     {
-        $this->name     = $name;
-        $this->age      = $age;
-        $this->gender   = $gender;
+        $this->name                 = $name;
+        $this->age                  = $age;
+        $this->gender               = $gender;
+        $this->height               = $height;
+        $this->weight               = $weight;
+        $this->waistCircumference   = $waistCircumference;
+
+        $className = get_class($this);
+        if ($className != "Person") {
+            $this->standardMeasurement = $className;
+        }
     }
 
     public function welcomeGreeting()
@@ -25,42 +30,44 @@ class Person
         return "Hi, {$this->name}! Let's check your body health results.";
     }
 
-    public function countBMI($height, $weight)
+    public function countBMI()
     {
         // convert $height in centimeter to meter unit
-        $height /= 100;
-        $bmi    = number_format($weight / ($height ** 2), 2);
+        $height = $this->height / 100;
+        $bmi    = number_format($this->weight / ($height ** 2), 2);
 
         return $bmi;
     }
 
     public function categoryBMI($bmiScore)
     {
+        $categories = ["Underweight (Severe thinness)", "Underweight (Moderate thinness)", "Underweight (Mild thinness)", "Normal", "Overweight (Pre-obese)", "Obese (Class I)", "Obese (Class II)", "Obese (Class III)"];
+
         if ($bmiScore < 16.0) {
-            $category = "Underweight (Severe thinness)";
+            $category = $categories[0];
         } elseif ($bmiScore >= 16.0 && $bmiScore <= 16.9) {
-            $category = "Underweight (Moderate thinness)";
+            $category = $categories[1];
         } elseif ($bmiScore >= 17.0 && $bmiScore <= 18.4) {
-            $category = "Underweight (Mild thinness)";
+            $category = $categories[2];
         } elseif ($bmiScore >= 18.5 && $bmiScore <= 24.9) {
-            $category = "Normal";
+            $category = $categories[3];
         } elseif ($bmiScore >= 25.0 && $bmiScore <= 29.9) {
-            $category = "Overweight (Pre-obese)";
+            $category = $categories[4];
         } elseif ($bmiScore >= 30.0 && $bmiScore <= 34.9) {
-            $category = "Obese (Class I)";
+            $category = $categories[5];
         } elseif ($bmiScore >= 35.0 && $bmiScore <= 39.9) {
-            $category = "Obese (Class II)";
+            $category = $categories[6];
         } else {
-            $category = "Obese (Class III)";
+            $category = $categories[7];
         }
 
         return $category;
     }
 
-    public function countRFM($height, $waistCircumference)
+    public function countRFM()
     {
         $genderOperandValue  = $this->gender == "M" ? 64 : 74;
-        $rfm            = number_format($genderOperandValue - (20 * $height / $waistCircumference), 2);
+        $rfm            = number_format($genderOperandValue - (20 * $this->height / $this->waistCircumference), 2);
 
         return $rfm;
     }
@@ -105,26 +112,3 @@ class Person
         return $category;
     }
 }
-
-// instantiate the object
-$roki = new Person;
-$roki->setNameAgeGender("Roki", 23, "M");
-$rokiBMI = $roki->countBMI(180, 68);
-$rokiRFM = $roki->countRFM(180, 65);
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title><?= $roki->name ?> Health Record: BMI and RFM</title>
-</head>
-
-<body>
-    <h1><?= "{$roki->name}'s Body Mass Index (BMI) and Relative Fat Mass (RFM) Result." ?></h1>
-    <h3><?= $roki->welcomeGreeting() ?></h3>
-    <p><?= "BMI: <b>$rokiBMI</b>, belongs to the category <b>{$roki->categoryBMI($rokiBMI)}</b>." ?></p>
-    <p><?= "RFM: <b>$rokiRFM%</b>, belongs to the category <b>{$roki->categoryRFM($rokiRFM)}</b>." ?></p>
-</body>
-
-</html>
