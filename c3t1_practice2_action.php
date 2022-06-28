@@ -7,37 +7,22 @@ $gender = $_GET['gender'];
 $waist_circumference    = $_GET['waist_circumference'];
 $standard               = $_GET['standard'];
 
-// form validation
-$notValid = [];
+// validating the form first
 if (empty($name)) {
-    array_push($notValid, "Name");
+    header("Location: c3t1_practice2_error.php?errorMessage=name");
 } elseif (empty($age) || !is_numeric($age)) {
-    array_push($notValid, "Age");
+    header("Location: c3t1_practice2_error.php?errorMessage=age");
 } elseif (empty($height) || !is_numeric($height)) {
-    array_push($notValid, "Height");
+    header("Location: c3t1_practice2_error.php?errorMessage=height");
 } elseif (empty($weight) || !is_numeric($weight)) {
-    array_push($notValid, "Weight");
+    header("Location: c3t1_practice2_error.php?errorMessage=weight");
 } elseif (!($gender == "M" || $gender == "F")) {
-    array_push($notValid, "Gender");
+    header("Location: c3t1_practice2_error.php?errorMessage=gender");
 } elseif (empty($waist_circumference) || !is_numeric($waist_circumference)) {
-    array_push($notValid, "Circumference");
-} elseif ($standard == "WHO" || $standard == "Japan" || $standard == "Hongkong" || $standard == "Singapore") {
-    array_push($notValid, "Standard");
+    header("Location: c3t1_practice2_error.php?errorMessage=waist_circumference");
+} elseif (!($standard == "Person" || $standard == "Japan" || $standard == "Hongkong" || $standard == "Singapore")) {
+    header("Location: c3t1_practice2_error.php?errorMessage=standard");
 }
-
-// echo count([]);
-echo "<br>";
-// var_dump($notValid);
-if (count($notValid) > 0) {
-    $messages = null;
-    foreach ($notValid as $idx => $message) {
-        $messages .= "message$idx=$message,";
-    }
-
-    header("Location: c3t1_practice2_error.php?$messages");
-}
-
-die();
 
 require_once "class/$standard.php";
 

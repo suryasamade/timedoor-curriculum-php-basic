@@ -7,6 +7,7 @@
 
 <body>
     <h3 style="color: red;">Your data input is not valid!</h3>
+    <p>Check your input on '<b><?= $_GET['errorMessage'] ?></b>' column!</p>
     <p>Click this <a href="c3t1_practice2_form.php">link</a> to try re-input the form.</p>
 </body>
 

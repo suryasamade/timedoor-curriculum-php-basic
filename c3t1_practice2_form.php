@@ -1,6 +1,5 @@
 <!-- SKENARIO -->
 <!-- melakukan validasi terhadap input value yang dikirimkan oleh form, sebelum data/input value diproses -->
-<!-- menggunakan form method POST untuk mengirimkan data yang lebih aman -->
 
 <!DOCTYPE html>
 <html lang="en">
