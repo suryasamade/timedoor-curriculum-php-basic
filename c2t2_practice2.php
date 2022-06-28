@@ -19,7 +19,7 @@ $supposeNewComerMember = [
 
 // memasukkan array lain ke elemen terakhir, mengandaikan member baru
 array_push($recentAseanCountries, $supposeNewComerMember);
-// mengeluarkan array terakhir dari array
+// mengeluarkan elemen terakhir dari array
 array_pop($recentAseanCountries);
 ?>
 
