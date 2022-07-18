@@ -1,12 +1,14 @@
+<!-- GRADE OF TEST SCORE -->
 <!-- SKENARIO -->
 <!-- menentukan grade nilai ujian (elseif), skala nilai 100 -->
 <!-- menentukan keterangan nilai ujian berdasarkan grade (switch-case) -->
 
 <?php
-$testScore = 50;
 // inisiasi nilai untuk menyimpan grade dan deskripsi nilai
-$grade = null;
-$description = null;
+$appName            = "Grade of Test Score";
+$testScore          = 50;
+$grade              = null;
+$gradeDescription   = null;
 
 // menentukan grade nilai
 // tanpa operator logika penggunaan AND/OR, batasan kondisi kurang jelas
@@ -27,33 +29,36 @@ if ($testScore > 90) {
 // menentukan deskripsi berdasar grade
 switch ($grade) {
     case 'A':
-        $description = "Perfect";
+        $gradeDescription = "Perfect";
         break;
     case 'B':
-        $description = "Excellent";
+        $gradeDescription = "Excellent";
         break;
     case 'C':
-        $description = "Good";
+        $gradeDescription = "Good";
         break;
     case 'D':
-        $description = "Enough";
+        $gradeDescription = "Enough";
         break;
     case 'E': // tidak menggunakan break, maka case akan berjalan terus hingga menemukan break
     default:
-        $description = "Try Again";
+        $gradeDescription = "Try Again";
         break;
 }
+
+$reportResults = "Nilai ujian Anda adalah $testScore, termasuk ke dalam grade $grade!";
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Grade of Test Score</title>
+    <title><?= $appName ?></title>
 </head>
 
 <body>
-    <?= "$description. Nilai ujian Anda adalah $testScore, termasuk ke dalam grade $grade!" ?>
+    <h1><?= $gradeDescription ?></h1>
+    <p><?= $reportResults ?></p>
 </body>
 
 </html>

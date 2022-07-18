@@ -1,3 +1,4 @@
+<!-- BMI -->
 <!-- SKENARIO -->
 <!-- menghitung BMI, dan menentukan kategorinya -->
 <!-- konversi rentang nilai menjadi operator perbandingan-logika -->
@@ -42,6 +43,7 @@ if ($bmi < 16.0) {
     <p>Berat badan = <?= $mass ?> kg & tinggi badan = <?= $height ?> m.</p>
     <p>BMI Anda adalah sebesar <?= $bmi ?> dan termasuk dalam kategori <b><?= $category ?></b>.</p>
     <?php
+    // gunakan if(): endif;
     if ($category != "Normal") {
         echo "<p><b style='color:red'>Warning!</b> Perhatikan kondisi kesehatan dan kecukupan gizi Anda.</p>";
     }
