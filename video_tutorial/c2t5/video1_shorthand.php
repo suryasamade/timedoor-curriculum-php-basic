@@ -1,6 +1,9 @@
+<!-- CASE -->
+<!-- menentukan cukup tidaknya usia seseorang untuk  -->
+
 <?php
 $age = 20;
-$driverLicenseStatus = $age >= 18 ? "yay... ready to be a driver!" : "not yet of age to drive!";
+$driverLicenseStatus = $age >= 18 ? "yay... ready to be a driver!" : "not enough yet to driving!";
 ?>
 
 <!DOCTYPE html>

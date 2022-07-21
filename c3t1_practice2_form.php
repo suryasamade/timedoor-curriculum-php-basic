@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- melakukan validasi terhadap input value yang dikirimkan oleh form, sebelum data/input value diproses -->
 
 <!DOCTYPE html>

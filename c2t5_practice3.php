@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- memanfaatkan constructor, require/include, membuat inheritance, melakukan overriding property/method, memanfaatkan fungsi get_class() -->
 <!-- ubah $category pada categoryBMI() class Person dalam bentuk array -->
 

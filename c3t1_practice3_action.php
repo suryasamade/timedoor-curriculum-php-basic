@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- validasi form, input required, jika salah satu kosong redirect ke form lagi -->
 <!-- jika lolos validasi, cocokkan credential-nya, jika cocok tampilkan halaman, jika tidak kembali ke form lagi -->
 

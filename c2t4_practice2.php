@@ -1,58 +1,107 @@
-<!-- SKENARIO -->
-<!-- menghitung harga jual tanah berdasarkan bentuk lahan -->
-<!-- pemerintah provinsi X menganggarkan sebagian apbd nya untuk melakukan pembelian aset berupa tanah/lahan -->
-<!-- yang dalam rencananya akan digunakan untuk membangun sebuah stadion sepakbola kebanggaan provinsi X tersebut -->
-<!-- terdapat sebuah areal lahan potensial berbentuk persegi yang siap untuk dibangun stadion ditengahnya yang akan berbentuk lingkaran -->
-<!-- namun pemerintah X perlu melakukan pengkajian untuk menghitung anggaran yang harus dikeluarkan diluar luas lahan yang akan dibangun stadion diatasnya tersebut -->
-<!-- sedangkan harga yang disetujui untuk per m2 adalah senilai Rp. 450.000 -->
-<!-- berapakah anggaran yang harus dikeluarkan pemerintah X untuk lahan diluar luas stadion? -->
-<!-- THIS STUDY-CASE CAN BE MORE IMPROVE AGAIN, WE CAN USING ARRAY, CONDITIONAL, etc -->
+<!-- CASE -->
+<!-- 
+    1. tambahkan type-hinting pada params dan return
+ -->
 
 <?php
-
-function squareArea(float $side): float
+function concateFullName(string $firstName, string $lastName): string
 {
-    $area = $side * $side;
-    return $area;
+    return "$firstName $lastName";
 }
 
-function circleArea(float $r): float
+function finalScoreStatus(int $examScore, int $quizScore): string
 {
-    $area = pi() * $r * $r;
-    return $area;
+    if (($examScore > 80) && ($quizScore > 82)) {
+        return "Passed!";
+    } elseif ($examScore > 80) {
+        return "Not passed, take new quiz!";
+    } elseif ($quizScore > 82) {
+        return "Not passed, take the remedial exam!";
+    } else {
+        return "Not passed, try next semester!";
+    }
 }
 
-function pricesOfLand(float $areaOfLand, int $pricePerMSquare)
-{
-    $prices = $areaOfLand * $pricePerMSquare;
-    return $prices;
+$studentsData   = [
+    [
+        "id"            => 1220,
+        "first_name"    => "Lina",
+        "last_name"     => "Karolin",
+        "gender"        => "female",
+        "exam_score"    => 78,
+        "quiz_score"    => 80
+    ],
+    [
+        "id"            => 1221,
+        "first_name"    => "Kidi",
+        "last_name"     => "Alan",
+        "gender"        => "male",
+        "exam_score"    => 77,
+        "quiz_score"    => 79
+    ],
+    [
+        "id"            => 1222,
+        "first_name"    => "Amar",
+        "last_name"     => "Tanjung",
+        "gender"        => "male",
+        "exam_score"    => 92,
+        "quiz_score"    => 85
+    ],
+    [
+        "id"            => 1223,
+        "first_name"    => "Pandu",
+        "last_name"     => "Ginanjar",
+        "gender"        => "male",
+        "exam_score"    => 84,
+        "quiz_score"    => 84
+    ],
+    [
+        "id"            => 1224,
+        "first_name"    => "Lili",
+        "last_name"     => "Pertiwi",
+        "gender"        => "female",
+        "exam_score"    => 63,
+        "quiz_score"    => 81
+    ],
+    [
+        "id"            => 1225,
+        "first_name"    => "Wirni",
+        "last_name"     => "Asih",
+        "gender"        => "female",
+        "exam_score"    => 80,
+        "quiz_score"    => 91
+    ]
+];
+
+$sumScores      = 0;
+$sumQuizScores  = 0;
+
+foreach ($studentsData as $student) {
+    $sumScores += $student['exam_score'];
+    $sumQuizScores += $student['quiz_score'];
 }
 
-$sideSquareLength = 220;
-$radOfCircle = "80";
-$pricePerM2Area = 450000;
+$averageOfExamScores = $sumScores / count($studentsData);
+$averageOfQuizScores = $sumQuizScores / count($studentsData);
 
-$squareArea = squareArea((float)$sideSquareLength);
-$circleArea = circleArea((float)$radOfCircle);
-
-$outerStadionArea = $squareArea - $circleArea;
-$pricesLandTotal = pricesOfLand($squareArea, $pricePerM2Area);
-$pricesLandOuterStadion = pricesOfLand($outerStadionArea, $pricePerM2Area);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Stadion Land Prices Estimation</title>
+    <title>Final Scores of Students with Functions</title>
 </head>
 
 <body>
-    <h1>Stadion Land Prices Estimation</h1>
-    <p><?php echo "Dengan sisi lahan yang berbentuk persegi memiliki panjang $sideSquareLength m." ?></p>
-    <p><?php echo "Dan radius/jari-jari untuk digunakan sebagai stadion direncanakan sepanjang $radOfCircle m." ?></p>
-    <p><?php echo "Maka total luas lahan keseluruan yaitu " . number_format($squareArea, 2) . " m<sup>2</sup> seharga " . number_format($pricesLandTotal, 2) . ", sedangkan yang akan dimanfaatkan sebagai stadion hanya seluas " . number_format($circleArea, 2) . " m<sup>2</sup>." ?></p>
-    <p><?php echo "Akan tersisa lahan seluas " . number_format($outerStadionArea, 2) . " m<sup>2</sup> yang dapat dimanfaatkan sebagai fasilitas penunjang, namun pemerintah X harus membayar Rp. " . number_format($pricesLandOuterStadion, 2) . " diluar harga lahan untuk stadion." ?></p>
+    <h1>Students Final Scores with Functions</h1>
+    <p>List of the students score!</p>
+    <ol>
+        <?php foreach ($studentsData as $student) : ?>
+            <li><?= "<b>" . concateFullName($student['first_name'], $student['last_name']) . "</b>, student with id $student[id]. Your final score status is <b>" . finalScoreStatus($student['exam_score'], $student['quiz_score']) . "</b>" ?></li>
+        <?php endforeach; ?>
+    </ol>
+    <p><?= "And... average of all those data, <b>average exam score is $averageOfExamScores</b> and <b>average quiz score is $averageOfQuizScores</b>" ?></p>
 </body>
 
 </html>

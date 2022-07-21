@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- membuat class dan properties untuk program BMI dan RFM Calculator -->
 
 <?php

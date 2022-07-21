@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- membuat/menambahkan method, menggunakan $this keyword untuk merujuk sebuah objek -->
 <!-- concatenation types: '{$variable}' -->
 

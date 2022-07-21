@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- 
     sertakan code-base struktur html
     PHP file naming

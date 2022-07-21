@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- membuat form, melakukan handling terhadap input yang diberikan, dan menampilkannya -->
 
 <!DOCTYPE html>

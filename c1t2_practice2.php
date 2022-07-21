@@ -1,5 +1,5 @@
 <!-- COST CALCULATION -->
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- 
     gunakan form sebagai tempat user menentukan nilai, agar dinamis
     ambil dan simpan nilai yang diinputkan user ke dalam variable dengan bantuan form handling (global variables)

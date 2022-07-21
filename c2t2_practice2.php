@@ -1,60 +1,73 @@
-<!-- SKENARIO -->
-<!-- melakukan merge terhadap array negara anggota asean berdasarkan waktu/periode bergabungnya ke dalam array recentAseanCountries -->
-<!-- melakukan push, memasukkan array baru pada akhir elemen sebagai pengandaian negara lain bergabung tanpa membuat variable baru-->
-<!-- melakukan pop, menghapus elemen array terakhir untuk mengembalikan jumlah member seharusnya -->
+<!-- CASE -->
+<!-- 
+    1. buat form untuk input author dan quote baru
+    2. tangkap dan lakukan evaluasi pada input, hanya input yang di-set dan tidak kosong saja yang akan disimpan sebagai array associative
+    3. gabungkan (push) array hasil input dengan existing array, hanya jika seluruh evaluasi sebelumnya bernilai true
+    4. tambahkan sebuah input checkbox 'show my (input) quote', jika dicentang maka akan menampilkan quote hasil inputan, jika tidak dicentang akan ditampilkan quote hasil random
+ -->
 
 <?php
 
-include "./c2t2_practice2_data.php";
-
-$recentAseanCountries = array_merge($aseanCountries, $join1984, $join1995, $join1997, $join1999);
-
-// tidak perlu dibungkus dengan array luar lagi, karena akan langsung dimasukkan sebagai elemen baru
-$supposeNewComerMember = [
-    "year" => 2024,
-    "members" => [
-        ["country" => "Timor-Leste", "capital" => "Dili"]
+$quotes = [
+    [
+        "author"    => "Ludwig van Beethoven",
+        "quote"     => "Art! Who comprehends her? With whom can one consult concerning this great goddess?"
+    ],
+    [
+        "author"    => "Nelson Mandela",
+        "quote"     => "The greatest glory in living lies not in never falling, but in rising every time we fall."
+    ],
+    [
+        "author"    => "Steve Jobs",
+        "quote"     => "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking."
+    ],
+    [
+        "author"    => "Walt Disney",
+        "quote"     => "The way to get started is to quit talking and begin doing."
+    ],
+    [
+        "author"    => "Eleanor Roosevelt",
+        "quote"     => "If life were predictable it would cease to be life, and be without flavor."
     ]
 ];
 
-// memasukkan array lain ke elemen terakhir, mengandaikan member baru
-array_push($recentAseanCountries, $supposeNewComerMember);
-// mengeluarkan elemen terakhir dari array
-array_pop($recentAseanCountries);
+if ((isset($_GET['author']) && !empty($_GET['author'])) && (isset($_GET['quote']) && !empty($_GET['quote']))) {
+    $inputQuote = [
+        "author"    => $_GET['author'],
+        "quote"     => $_GET['quote']
+    ];
+
+    array_push($quotes, $inputQuote);
+}
+
+if (isset($_GET['my_quote'])) {
+    $randomQuote = $quotes[count($quotes) - 1];
+} else {
+    $randomQuote = $quotes[rand(0, count($quotes) - 1)];
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>ASEAN Countries History</title>
+    <title>The Random Quotes</title>
 </head>
 
-<body>
-    <?php
-    // sebelum array hasil merge digunakan, coba untuk mencetak terlebih dahulu menggunakan fungsi var_dump() atau print_r()
-    // var_dump($recentAseanCountries);
-    ?>
-
-    <h1>ASEAN Countries History (with its Capital) by its Join Periods</h1>
-    <?php foreach ($recentAseanCountries as $period) : ?>
-        <p>In <?= $period["year"] . ", the new joiner is:" ?></p>
-        <ul>
-            <?php foreach ($period["members"] as $member) : ?>
-                <li><?= $member["country"] . " (" . $member["capital"] . ")" ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endforeach; ?>
-
-    <!-- menampilkan keseluruhan asean member -->
-    <h3>So until now ASEAN members consist of:</h3>
-    <ol>
-        <?php foreach ($recentAseanCountries as $period) : ?>
-            <?php foreach ($period["members"] as $member) : ?>
-                <li><?= $member["country"] . " (" . $member["capital"] . ")" ?></li>
-            <?php endforeach; ?>
-        <?php endforeach; ?>
-    </ol>
+<body style="width: 50%;">
+    <h1>Quote of the day!</h1>
+    <p>Press <code>F5</code> or <code>Ctrl + R</code> to randomize the quote.</p>
+    <h3><b>"<?= $randomQuote["quote"] ?>"</b> - <?= $randomQuote["author"] ?></h3>
+    <form action="" method="get">
+        <label for="author_name">Author Name</label>
+        <input type="text" name="author" id="author_name"><br>
+        <label for="quote_inspirational">Inspirational Quote</label>
+        <input type="text" name="quote" id="quote_inspirational"><br>
+        <label for="show_my_quote">Show my input quote</label>
+        <input type="checkbox" name="my_quote" id="show_my_quote"><br>
+        <input type="submit" value="Submit">
+    </form>
 </body>
 
 </html>

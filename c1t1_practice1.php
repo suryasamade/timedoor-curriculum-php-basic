@@ -1,4 +1,4 @@
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- 
     menampilkan teks string dengan echo
 -->

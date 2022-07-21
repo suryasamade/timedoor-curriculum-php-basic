@@ -1,5 +1,5 @@
 <!-- COST CALCULATION -->
-<!-- SKENARIO -->
+<!-- CASE -->
 <!-- 
     terdapat tiga proyek perbaikan jalan yang sedang di lakukan di perumahan 'Graha Sentosa'
     jalan pertama bernama 'Jalan Anggrek' memiliki panjang 0.8 kilometer
