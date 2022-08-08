@@ -11,8 +11,6 @@
 -->
 
 <?php
-$appName        = "Cost Calculation";
-$appTitle       = "Calculating Project Cost";
 
 // [comment di bawah masukkan sebagai butir soal]
 // variable panjang jalan
@@ -38,22 +36,18 @@ $totalCost          = $costMaterial + $workerFee;
 
 // [comment di bawah masukkan sebagai butir soal]
 // melakukan concate dengan single quote string
-// [explain on material] string menggunakan single quote
-$costDescription    = 'Maka untuk melakukan perbaikan jalan dengan total panjang ' . $totalStreetLength . ' meter, Perumahan Graha Sentosa harus menyiapkan total biaya sebesar Rp. ' . $totalCost . '.';
-// [explain on material] string menggunakan double quote
-// echo "Maka untuk melakukan perbaikan jalan sepanjang $totalStreetLength meter, Perumahan X harus menyiapkan total biaya sebesar Rp. $totalBiaya.";
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title><?= $appName ?></title>
+    <title>Cost Calculation</title>
 </head>
 
 <body>
-    <h1><?= $appTitle ?></h1>
-    <p><?= $costDescription ?></p>
+    <h1>Calculating Project Cost</h1>
+    <p><?= "To carry out road repairs with a total length of {$totalStreetLength} meters, Perumahan Graha Sentosa must prepare a total cost of Rp. {$totalCost}." ?></p>
 </body>
 
 </html>

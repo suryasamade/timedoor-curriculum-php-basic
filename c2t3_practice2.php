@@ -43,16 +43,17 @@ $studentsData   = [
     ]
 ];
 
-$sumScores      = 0;
-$sumQuizScores  = 0;
+$sumScores          = 0;
+$sumQuizScores      = 0;
+$countOfStudents    = count($studentsData);
 
 foreach ($studentsData as $student) {
     $sumScores += $student['exam_score'];
     $sumQuizScores += $student['quiz_score'];
 }
 
-$averageOfExamScores = $sumScores / count($studentsData);
-$averageOfQuizScores = $sumQuizScores / count($studentsData);
+$averageOfExamScores    = $sumScores / $countOfStudents;
+$averageOfQuizScores    = $sumQuizScores / $countOfStudents;
 ?>
 
 <!DOCTYPE html>
@@ -67,10 +68,10 @@ $averageOfQuizScores = $sumQuizScores / count($studentsData);
     <p>List of the students score!</p>
     <ol>
         <?php foreach ($studentsData as $student) : ?>
-            <li><?= "Student with id $student[id] named $student[name], got exam score = $student[exam_score] and quiz score = $student[quiz_score].<br>" ?></li>
+            <li><?= "Student with id {$student['id']} named {$student['name']}, got exam score = {$student['exam_score']} and quiz score = {$student['quiz_score']}.<br>" ?></li>
         <?php endforeach; ?>
     </ol>
-    <p><?= "And... average of all those data, <b>average exam score is $averageOfExamScores</b> and <b>average quiz score is $averageOfQuizScores</b>" ?></p>
+    <p>And... average of all those data, <b>average exam score is <?= $averageOfExamScores ?></b> and <b>average quiz score is <?= $averageOfQuizScores ?></b></p>
 </body>
 
 </html>

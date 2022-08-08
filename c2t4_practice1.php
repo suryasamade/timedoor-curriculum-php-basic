@@ -11,18 +11,18 @@
  -->
 
 <?php
-function concateFullName($firstName, $lastName)
+function concate_full_name($firstName, $lastName)
 {
-    return "$firstName $lastName";
+    return "{$firstName} {$lastName}";
 }
 
-function finalScoreStatus($examScore, $quizScore)
+function final_score_status($examScore, $quizScore)
 {
     if (($examScore > 80) && ($quizScore > 82)) {
         return "Passed!";
-    } elseif ($examScore > 80) {
+    } elseif (($examScore > 80) && ($quizScore <= 82)) {
         return "Not passed, take new quiz!";
-    } elseif ($quizScore > 82) {
+    } elseif (($examScore <= 80) && ($quizScore > 82)) {
         return "Not passed, take the remedial exam!";
     } else {
         return "Not passed, try next semester!";
@@ -80,17 +80,17 @@ $studentsData   = [
     ]
 ];
 
-$sumScores      = 0;
-$sumQuizScores  = 0;
+$sumScores          = 0;
+$sumQuizScores      = 0;
+$countOfStudents    = count($studentsData);
 
 foreach ($studentsData as $student) {
-    $sumScores += $student['exam_score'];
-    $sumQuizScores += $student['quiz_score'];
+    $sumScores      += $student['exam_score'];
+    $sumQuizScores  += $student['quiz_score'];
 }
 
-$averageOfExamScores = $sumScores / count($studentsData);
-$averageOfQuizScores = $sumQuizScores / count($studentsData);
-
+$averageOfExamScores    = $sumScores / $countOfStudents;
+$averageOfQuizScores    = $sumQuizScores / $countOfStudents;
 ?>
 
 <!DOCTYPE html>
@@ -105,10 +105,13 @@ $averageOfQuizScores = $sumQuizScores / count($studentsData);
     <p>List of the students score!</p>
     <ol>
         <?php foreach ($studentsData as $student) : ?>
-            <li><?= "<b>" . concateFullName($student['first_name'], $student['last_name']) . "</b>, student with id $student[id]. Your final score status is <b>" . finalScoreStatus($student['exam_score'], $student['quiz_score']) . "</b>" ?></li>
+            <?php $studentFullName      = concate_full_name($student['first_name'], $student['last_name']); ?>
+            <?php $studentScoreStatus   = final_score_status($student['exam_score'], $student['quiz_score']); ?>
+
+            <li><?= "<b>{$studentFullName}</b>, student with id {$student['id']}. Your final score status is <b>{$studentScoreStatus}</b>" ?></li>
         <?php endforeach; ?>
     </ol>
-    <p><?= "And... average of all those data, <b>average exam score is $averageOfExamScores</b> and <b>average quiz score is $averageOfQuizScores</b>" ?></p>
+    <p>And... average of all those data, <b>average exam score is <?= $averageOfExamScores ?></b> and <b>average quiz score is <?= $averageOfQuizScores ?></b></p>
 </body>
 
 </html>

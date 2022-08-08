@@ -31,7 +31,10 @@ $quotes = [
     ]
 ];
 
-if ((isset($_GET['author']) && !empty($_GET['author'])) && (isset($_GET['quote']) && !empty($_GET['quote']))) {
+$isAuthorSetted     = isset($_GET['author']) && !empty($_GET['author']);
+$isQuoteSetted      = isset($_GET['quote']) && !empty($_GET['quote']);
+
+if ($isAuthorSetted && $isQuoteSetted) {
     $inputQuote = [
         "author"    => $_GET['author'],
         "quote"     => $_GET['quote']
