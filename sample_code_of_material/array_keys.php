@@ -3,7 +3,7 @@ $user = array(
     "id" => 33,
     "first_name" => "Richard",
     "last_name" => "Nixon",
-    "position" => "US President"
+    "position" => "President of USA"
 );
 
 print_r(array_keys($user));
