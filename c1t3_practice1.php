@@ -8,6 +8,7 @@
 
 <?php
 // nilai default
+// VARIABLE $isCashReady DATANGNYA DARI MANA? KOK TIBA-TIBA ADA? APAKAH ADA DI BUTIR SOAL PRACTICE?
 $isCashReady            = false;
 $anggrekStreetLength    = 0;
 $kambojaStreetLength    = 0;
@@ -15,6 +16,9 @@ $lotusStreetLength      = 0;
 
 // input yang tidak di-set ketika di-submit, akan true saat evaluasi isset() 
 // menyebabkan empty string disimpan ke dalam variable (jika pengecekan empty() dihapus)
+
+// BERIKAN BATASAN AGAR HANYA MENGGUNAKAN MATERI YANG DIAJARKAN SAJA DULU
+
 if (isset($_GET['anggrek_street'])) {
     if (empty($_GET['anggrek_street'])) {
     } else {

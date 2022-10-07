@@ -78,7 +78,8 @@ $totalCost          = $costMaterial + $workerFee;
             <option value="km">KM</option>
             <option value="m">M</option>
             <option value="cm">CM</option>
-        </select><br>
+        </select>
+        <br>
         <label for="anggrek">Anggrek Street</label>
         <input type="number" step="0.1" name="anggrek_street" id="anggrek" required><br>
         <label for="kamboja">Kamboja Street</label>
@@ -93,6 +94,7 @@ $totalCost          = $costMaterial + $workerFee;
     <?php if ($totalStreetLength > 0) { ?>
         <p><?= "To carry out road repairs with a total length of {$totalStreetLength} meters, Perumahan Graha Sentosa must prepare a total cost of Rp. {$totalCost}." ?></p>
 
+        <!-- PENERAPAN ALTERNATIVE SYNTAX-NYA MANA? -->
         <?php if ($isCashReady) { ?>
             <p style="color:green;">Due to the availability of funds, the project will be implemented soon!</p>
         <?php } else { ?>

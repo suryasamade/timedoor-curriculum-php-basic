@@ -1,4 +1,4 @@
 <?php
-echo $_GET['email'];
+echo $_POST['email'];
 echo "<br>";
-echo $_GET['password'];
+echo $_POST['password'];

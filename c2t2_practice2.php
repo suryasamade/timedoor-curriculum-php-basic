@@ -10,34 +10,38 @@
 
 $quotes = [
     [
-        "author"    => "Ludwig van Beethoven",
-        "quote"     => "Art! Who comprehends her? With whom can one consult concerning this great goddess?"
+        "author" => "Ludwig van Beethoven",
+        "quote"  => "Art! Who comprehends her? With whom can one consult concerning this great goddess?"
+        // BEST PRACTICE: SERTAKAN SEMICOLON (TITIK KOMA) TIAP ITEM TERAKHIR ARRAY
     ],
     [
-        "author"    => "Nelson Mandela",
-        "quote"     => "The greatest glory in living lies not in never falling, but in rising every time we fall."
+        "author" => "Nelson Mandela",
+        "quote"  => "The greatest glory in living lies not in never falling, but in rising every time we fall."
     ],
     [
-        "author"    => "Steve Jobs",
-        "quote"     => "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking."
+        "author" => "Steve Jobs",
+        "quote"  => "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking."
     ],
     [
-        "author"    => "Walt Disney",
-        "quote"     => "The way to get started is to quit talking and begin doing."
+        "author" => "Walt Disney",
+        "quote"  => "The way to get started is to quit talking and begin doing."
     ],
     [
-        "author"    => "Eleanor Roosevelt",
-        "quote"     => "If life were predictable it would cease to be life, and be without flavor."
+        "author" => "Eleanor Roosevelt",
+        "quote"  => "If life were predictable it would cease to be life, and be without flavor."
     ]
 ];
 
-$isAuthorSetted     = isset($_GET['author']) && !empty($_GET['author']);
-$isQuoteSetted      = isset($_GET['quote']) && !empty($_GET['quote']);
+// $isAuthorSetted = isset($_GET['author']) && !empty($_GET['author']);
+// $isQuoteSetted  = isset($_GET['quote']) && !empty($_GET['quote']);
+// TAMPILKAN QUOTES MESKI SALAH SATU INPUT TIDAK DIISI/KOSONG
+$isAuthorSetted = isset($_GET['author']);
+$isQuoteSetted  = isset($_GET['quote']);
 
 if ($isAuthorSetted && $isQuoteSetted) {
     $inputQuote = [
-        "author"    => $_GET['author'],
-        "quote"     => $_GET['quote']
+        "author" => $_GET['author'],
+        "quote"  => $_GET['quote']
     ];
 
     array_push($quotes, $inputQuote);

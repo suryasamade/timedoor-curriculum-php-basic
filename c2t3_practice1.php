@@ -7,9 +7,10 @@
 <!-- masukkan dan kumpulkan tiap nilai hasil rata-rata tersebut ke dalam sebuah array -->
 
 <?php
-$examScores     = [78, 77, 92, 84, 63, 80];
+$examScores = [78, 77, 92, 84, 63, 80];
+$sumScores  = 0;
+// BEST PRACTISE: BERIKAN SPACES SATU LINE ANTARA CONDITIONING/LOOP/BREAK/RETURN JIKA SUDAH DI LUAR SCOPE, SEPERTI KODE DI BAWAH
 
-$sumScores = 0;
 for ($i = 0; $i < count($examScores); $i++) {
     $sumScores += $examScores[$i];
 }

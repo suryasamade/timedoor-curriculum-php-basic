@@ -1,47 +1,58 @@
 <?php
-// C2T5 PRACTICE 3
-require_once "Person.php";
-
-class BodyMassIndex extends Person
-{
-    private $bmiScore, $bmiCategory;
-
-    public function countBMI()
+    // C2T5 PRACTICE 3
+    class BodyMassIndex
     {
-        // convert $height in centimeter to meter unit
-        $height         = $this->height / 100;
-        $this->bmiScore = number_format($this->weight / ($height ** 2), 2);
-        $this->setBMICategory($this->bmiScore);
-    }
+        private float $score     = 0;
+        private string $category = "";
 
-    private function setBMICategory($bmiScore)
-    {
-        if ($bmiScore < 16.0) {
-            $this->bmiCategory = "Underweight (Severe thinness)";
-        } elseif ($bmiScore >= 16.0 && $bmiScore <= 16.9) {
-            $this->bmiCategory = "Underweight (Moderate thinness)";
-        } elseif ($bmiScore >= 17.0 && $bmiScore <= 18.4) {
-            $this->bmiCategory = "Underweight (Mild thinness)";
-        } elseif ($bmiScore >= 18.5 && $bmiScore <= 24.9) {
-            $this->bmiCategory = "Normal";
-        } elseif ($bmiScore >= 25.0 && $bmiScore <= 29.9) {
-            $this->bmiCategory = "Overweight (Pre-obese)";
-        } elseif ($bmiScore >= 30.0 && $bmiScore <= 34.9) {
-            $this->bmiCategory = "Obese (Class I)";
-        } elseif ($bmiScore >= 35.0 && $bmiScore <= 39.9) {
-            $this->bmiCategory = "Obese (Class II)";
-        } else {
-            $this->bmiCategory = "Obese (Class III)";
+        private float $height = 0;
+        private float $weight = 0;
+
+        public function __construct(float $height, float $weight)
+        {
+            $this->height    = $height;
+            $this->weight = $weight;
+        }
+
+        public function calculate(): void
+        {
+            if ($this->height) {
+                $heightInMeter  = $this->height / 100;
+                $calculate      = $this->weight / ($heightInMeter ** 2);
+                $roundBMIResult = round($calculate, 2);
+
+                $this->score = $roundBMIResult;
+            }
+
+            $this->category = $this->category();
+        }
+
+        private function category(): string
+        {
+            if ($this->score >= 40) return "Obese (Class III)";
+
+            if ($this->score >= 35) return "Obese (Class II)";
+
+            if ($this->score >= 30) return "Obese (Class I)";
+
+            if ($this->score >= 25) return "Overweight (Pre-obese)";
+
+            if ($this->score >= 18.5) return "Normal";
+
+            if ($this->score >= 17.0) return "Underweight (Mild thinness)";
+
+            if ($this->score >= 16.0) return "Underweight (Moderate thinness)";
+
+            return "Underweight (Severe thinness)";
+        }
+
+        public function getScore(): float
+        {
+            return $this->score;
+        }
+
+        public function getCategory(): string
+        {
+            return $this->category;
         }
     }
-
-    public function getBMIScore()
-    {
-        return $this->bmiScore;
-    }
-
-    public function getBMICategory()
-    {
-        return $this->bmiCategory;
-    }
-}

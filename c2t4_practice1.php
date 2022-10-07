@@ -16,8 +16,16 @@ function concate_full_name($firstName, $lastName)
     return "{$firstName} {$lastName}";
 }
 
-function final_score_status($examScore, $quizScore)
+// PERHATIKAN NAMING CONVENTION (VARIABLE, FUNCTION, PROPERTIES, METHODS)
+function get_final_score_status($examScore, $quizScore)
 {
+
+    // if ($examScore < 80 && $quizScore < 82) {
+    //     return "Not passed, try next semester!";
+    // }
+    // PERBAIKI LOGIC-NYA, GUNAKAN EARLY RETURN UNTUK MEMINIMALISIR PENGGUNAAN ESLE-IF/NESTED-IF
+    // CHECK-POINT DISKUSI 22 SEPTEMBER
+
     if (($examScore > 80) && ($quizScore > 82)) {
         return "Passed!";
     } elseif (($examScore > 80) && ($quizScore <= 82)) {
@@ -89,6 +97,7 @@ foreach ($studentsData as $student) {
     $sumQuizScores  += $student['quiz_score'];
 }
 
+// CHALLENGE STUDENT: TENTUKAN AGAR HASILNYA DIBULATKAN 2 ANGKA DI BELAKANG KOMA
 $averageOfExamScores    = $sumScores / $countOfStudents;
 $averageOfQuizScores    = $sumQuizScores / $countOfStudents;
 ?>
@@ -105,8 +114,15 @@ $averageOfQuizScores    = $sumQuizScores / $countOfStudents;
     <p>List of the students score!</p>
     <ol>
         <?php foreach ($studentsData as $student) : ?>
-            <?php $studentFullName      = concate_full_name($student['first_name'], $student['last_name']); ?>
-            <?php $studentScoreStatus   = final_score_status($student['exam_score'], $student['quiz_score']); ?>
+            <?php //$studentFullName      = concate_full_name($student['first_name'], $student['last_name']); ?>
+            <?php //$studentScoreStatus   = get_final_score_status($student['exam_score'], $student['quiz_score']); ?>
+            
+            <!-- PENULISAN ALTERNATIVE SYNTAX PHP DI DALAM HTML -->
+            <!-- JIKA LEBIH DARI SATU BARIS HANYA TERDIRI DARI SYNTAX PHP, TAG BUKA-TUTUP PHP JADI SATU SAJA -->
+            <?php
+                $studentFullName      = concate_full_name($student['first_name'], $student['last_name']);
+                $studentScoreStatus   = get_final_score_status($student['exam_score'], $student['quiz_score']);
+            ?>
 
             <li><?= "<b>{$studentFullName}</b>, student with id {$student['id']}. Your final score status is <b>{$studentScoreStatus}</b>" ?></li>
         <?php endforeach; ?>

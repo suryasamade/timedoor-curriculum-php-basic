@@ -2,142 +2,161 @@
 <!-- MAKE METHODS, $this, SHORTHAND OPERATOR -->
 
 <?php
-class Person
-{
-    public $name            = "Person One",
-        $age                = 24,
-        $gender             = "m",
-        $height             = 177,
-        $weight             = 82,
-        $waistCircumference = 68,
-        $bmiScore           = 0,
-        $bmiCategory        = "",
-        $rfmScore           = 0,
-        $rfmCategory        = "";
-
-    public function setBio(
-        $name,
-        $age,
-        $gender,
-        $height,
-        $weight,
-        $waistCircumference
-    ) {
-        $this->name     = $name;
-        $this->age      = $age;
-        $this->gender   = $gender;
-        $this->height   = $height;
-        $this->weight   = $weight;
-        $this->waistCircumference = $waistCircumference;
-    }
-
-    public function countBMI()
+    class Person
     {
-        // convert $height in centimeter to meter unit
-        $height         = $this->height / 100;
-        $this->bmiScore = number_format($this->weight / ($height ** 2), 2);
-        $this->setBMICategory($this->bmiScore);
-    }
+        public string $name   = "";
+        public int $age       = 0;
+        public string $gender = "m";
 
-    public function setBMICategory($bmiScore)
-    {
-        if ($bmiScore < 16.0) {
-            $this->bmiCategory = "Underweight (Severe thinness)";
-        } elseif ($bmiScore >= 16.0 && $bmiScore <= 16.9) {
-            $this->bmiCategory = "Underweight (Moderate thinness)";
-        } elseif ($bmiScore >= 17.0 && $bmiScore <= 18.4) {
-            $this->bmiCategory = "Underweight (Mild thinness)";
-        } elseif ($bmiScore >= 18.5 && $bmiScore <= 24.9) {
-            $this->bmiCategory = "Normal";
-        } elseif ($bmiScore >= 25.0 && $bmiScore <= 29.9) {
-            $this->bmiCategory = "Overweight (Pre-obese)";
-        } elseif ($bmiScore >= 30.0 && $bmiScore <= 34.9) {
-            $this->bmiCategory = "Obese (Class I)";
-        } elseif ($bmiScore >= 35.0 && $bmiScore <= 39.9) {
-            $this->bmiCategory = "Obese (Class II)";
-        } else {
-            $this->bmiCategory = "Obese (Class III)";
+        public float $height    = 0;
+        public float $weight    = 0;
+        public float $waistSize = 0;
+
+        // PISAHKAN/BUAT SETTER UNTUK TIAP PROPERTY
+        public function bio(string $name, int $age, string $gender): void 
+        {
+            $this->name   = $name;
+            $this->age    = $age;
+            $this->gender = $gender;
+        }
+
+        public function bodyFact(float $height, float $weight, float $waistSize): void 
+        {
+            $this->height    = $height;
+            $this->weight    = $weight;
+            $this->waistSize = $waistSize;
         }
     }
 
-    public function countRFM()
+    class BodyMassIndex
     {
-        $genderOperandValue = $this->gender == "m" ? 64 : 74;
-        $this->rfmScore     = number_format($genderOperandValue - (20 * $this->height / $this->waistCircumference), 2);
-        $this->setRFMCategory($this->rfmScore);
+        public float $score     = 0;
+        public string $category = "";
+
+        public function calculate(float $height, float $weight): void
+        {
+            if ($height) {
+                $heightInMeter  = $height / 100;
+                $calculate      = $weight / ($heightInMeter ** 2);
+                $roundBMIResult = round($calculate, 2);
+
+                $this->score = $roundBMIResult;
+            }
+
+            $this->category = $this->category();
+        }
+
+        public function category(): string
+        {
+            if ($this->score >= 40) return "Obese (Class III)";
+
+            if ($this->score >= 35) return "Obese (Class II)";
+
+            if ($this->score >= 30) return "Obese (Class I)";
+
+            if ($this->score >= 25) return "Overweight (Pre-obese)";
+
+            if ($this->score >= 18.5) return "Normal";
+
+            if ($this->score >= 17.0) return "Underweight (Mild thinness)";
+
+            if ($this->score >= 16.0) return "Underweight (Moderate thinness)";
+
+            return "Underweight (Severe thinness)";
+        }
     }
 
-    public function setRFMCategory($rfmScore)
+    class RelativeFatMass
     {
-        $categories = [
+        public array $categories = [
             "Extremely low level of fat",
             "Essential fat",
             "Athletes",
             "Fitness",
             "Average",
-            "Obese"
+            "Obese",
         ];
+        public float $score     = 0;
+        public string $category = "";
 
-        switch ($this->gender) {
-            case 'm':
-                if ($rfmScore < 2) {
-                    $this->rfmCategory = $categories[0];
-                } elseif ($rfmScore >= 2 && $rfmScore < 6) {
-                    $this->rfmCategory = $categories[1];
-                } elseif ($rfmScore >= 6 && $rfmScore < 14) {
-                    $this->rfmCategory = $categories[2];
-                } elseif ($rfmScore >= 14 && $rfmScore < 18) {
-                    $this->rfmCategory = $categories[3];
-                } elseif ($rfmScore >= 18 && $rfmScore < 24) {
-                    $this->rfmCategory = $categories[4];
-                } else {
-                    $this->rfmCategory = $categories[5];
-                }
-                break;
-            default:
-                if ($rfmScore < 10) {
-                    $this->rfmCategory = $categories[0];
-                } elseif ($rfmScore >= 10 && $rfmScore < 14) {
-                    $this->rfmCategory = $categories[1];
-                } elseif ($rfmScore >= 14 && $rfmScore < 21) {
-                    $this->rfmCategory = $categories[2];
-                } elseif ($rfmScore >= 21 && $rfmScore < 25) {
-                    $this->rfmCategory = $categories[3];
-                } elseif ($rfmScore >= 25 && $rfmScore < 32) {
-                    $this->rfmCategory = $categories[4];
-                } else {
-                    $this->rfmCategory = $categories[5];
-                }
-                break;
+        public function calculate(float $height, float $waistSize, string $gender): void
+        {
+            if ($waistSize) {
+                $operandByGender = $gender === "m" ? 64 : 74;
+                // JELASKAN MAKSUD ANGKA-ANGKA DAN BAGIAN-BAGIAN RUMUS INI
+                $calculate       = $operandByGender - (20 * $height / $waistSize);
+                $roundRFMResult  = round($calculate, 2);
+
+                $this->score = $roundRFMResult;
+            }
+            
+            $this->category = $this->category($gender);
+        }
+
+        public function maleCategory(): string
+        {
+            if ($this->score < 2) return $this->categories[0];
+
+            if ($this->score < 6) return $this->categories[1];
+
+            if ($this->score < 14) return $this->categories[2];
+
+            if ($this->score < 18) return $this->categories[3];
+
+            if ($this->score < 24) return $this->categories[4];
+            
+            return $this->categories[5];
+        }
+
+        public function femaleCategory(): string
+        {
+            if ($this->score < 10) return $this->categories[0];
+
+            if ($this->score < 14) return $this->categories[1];
+
+            if ($this->score < 21) return $this->categories[2];
+
+            if ($this->score < 25) return $this->categories[3];
+
+            if ($this->score < 32) return $this->categories[4];
+            
+            return $this->categories[5];
+        }
+
+        public function category(string $gender): string
+        {
+            if ($gender === 'm') return $this->maleCategory();
+
+            return $this->femaleCategory();
         }
     }
-}
 
-function input_checker($inputName)
-{
-    if (isset($_GET[$inputName])) {
-        return $_GET[$inputName];
-    } else {
-        return "null";
+    function get_input(string $inputName, mixed $default = null) : mixed
+    {
+        if (isset($_GET[$inputName])) {
+            return $_GET[$inputName];
+        } 
+
+        return $default;
     }
-}
 
-$name       = input_checker('name');
-$age        = input_checker('age');
-$gender     = input_checker('gender');
-$height     = input_checker('height');
-$weight     = input_checker('weight');
-$waistCircumference = input_checker('waist_circumference');
+    $name      = get_input('name', '');
+    $age       = get_input('age', 0);
+    $gender    = get_input('gender', 'm');
+    $height    = get_input('height', 0);
+    $weight    = get_input('weight', 0);
+    $waistSize = get_input('waist_size', 0);
 
-// instantiate the object
-$objPerson = new Person();
+    // instantiate the object
+    $person = new Person();
+    $person->bio($name, $age, $gender);
+    $person->bodyFact($height, $weight, $waistSize);
 
-$objPerson->setBio($name, $age, $gender, $height, $weight, $waistCircumference);
+    $bmi = new BodyMassIndex();
+    $bmi->calculate($height, $weight);
 
-if (!($height == "null" || $weight == "null" || $waistCircumference == "null")) {
-    $objPerson->countBMI();
-    $objPerson->countRFM();
-}
+    $rfm = new RelativeFatMass();
+    $rfm->calculate($height, $waistSize, $gender);
 ?>
 
 <!DOCTYPE html>
@@ -170,22 +189,22 @@ if (!($height == "null" || $weight == "null" || $waistCircumference == "null")) 
         <label for="weight">Weight</label>
         <input type="number" name="weight" id="weight" step="0.1" required>
         <br>
-        <label for="waist_circumference">Waist Circumference</label>
-        <input type="number" name="waist_circumference" id="waist_circumference" required>
+        <label for="waist_size">Waist Size</label>
+        <input type="number" name="waist_size" id="waist_size" required>
         <br>
         <input type="submit" value="Count">
     </form>
     <p>User detail:</p>
     <ul>
         <!-- print object properties -->
-        <li>Name : <?= $objPerson->name ?></li>
-        <li>Age : <?= $objPerson->age ?></li>
-        <li>Gender : <?= $objPerson->gender ?></li>
-        <li>Height : <?= $objPerson->height ?></li>
-        <li>Weight : <?= $objPerson->weight ?></li>
-        <li>Waist circumference : <?= $objPerson->waistCircumference ?></li>
-        <li>BMI score : <?= "<b>{$objPerson->bmiScore}</b>, belongs to the category <b>{$objPerson->bmiCategory}</b>" ?></li>
-        <li>RFM score : <?= "<b>{$objPerson->rfmScore}%</b>, belongs to the category <b>{$objPerson->rfmCategory}</b>" ?></li>
+        <li>Name : <?= $person->name ?></li>
+        <li>Age : <?= $person->age ?></li>
+        <li>Gender : <?= $person->gender ?></li>
+        <li>Height : <?= $person->height ?></li>
+        <li>Weight : <?= $person->weight ?></li>
+        <li>Waist Size : <?= $person->waistSize ?></li>
+        <li>BMI score : <?= "<b>{$bmi->score}</b>, belongs to the category <b>{$bmi->category}</b>" ?></li>
+        <li>RFM score : <?= "<b>{$rfm->score}%</b>, belongs to the category <b>{$rfm->category}</b>" ?></li>
     </ul>
 </body>
 

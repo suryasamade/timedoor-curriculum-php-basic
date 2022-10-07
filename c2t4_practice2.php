@@ -98,10 +98,13 @@ $averageOfQuizScores    = $sumQuizScores / $countOfStudents;
     <p>List of the students score!</p>
     <ol>
         <?php foreach ($studentsData as $student) : ?>
-            <?php $studentFullName      = concate_full_name($student['first_name'], $student['last_name']); ?>
-            <?php $studentScoreStatus   = final_score_status($student['exam_score'], $student['quiz_score']); ?>
+            <?php
+                $studentFullName      = concate_full_name($student['first_name'], $student['last_name']);
+                $studentScoreStatus   = final_score_status($student['exam_score'], $student['quiz_score']);
+            ?>
 
-            <li><?= "<b>" . concate_full_name($student['first_name'], $student['last_name']) . "</b>, student with id $student[id]. Your final score status is <b>" . final_score_status($student['exam_score'], $student['quiz_score']) . "</b>" ?></li>
+            <!-- PERBAIKI PEMANGGILAN FUNCTION, SESUAI PRACTICE 1 -->
+            <li><?= "<b> {$studentFullName} </b>, student with id $student[id]. Your final score status is <b> {$studentScoreStatus} </b>" ?></li>
         <?php endforeach; ?>
     </ol>
     <p>And... average of all those data, <b>average exam score is <?= $averageOfExamScores ?></b> and <b>average quiz score is <?= $averageOfQuizScores ?></b></p>

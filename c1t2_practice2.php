@@ -32,6 +32,7 @@ $totalCost          = $costMaterial + $workerFee;
     <h1>Dynamics Calculating Project Cost</h1>
 
     <form action="" method="GET">
+        <!-- PADA BASE PRACTICE, SEDIAKAN LABEL SAJA, INPUT BIARKAN MEREKA YANG BUAT SENDIRI -->
         <label for="anggrek">Anggrek Street (meter)</label>
         <input type="number" step="0.1" name="anggrek_street" id="anggrek"><br>
         <label for="kamboja">Kamboja Street (meter)</label>
@@ -42,6 +43,9 @@ $totalCost          = $costMaterial + $workerFee;
     </form>
 
     <p><?= "To carry out road repairs with a total length of {$totalStreetLength} meters, Perumahan Graha Sentosa must prepare a total cost of Rp. {$totalCost}." ?></p>
+    <!-- PADA BASE, BERIKAN MEREKA PARAGRAPH MENTAHAN, JADI TUGAS MEREKA UNTUK MEMASUKKAN NILAI VAR KE DALAMNYA -->
+    <!-- UNTUK TEMPLATE LAYOUT, PAKAI CDN BOOTSTRAP DARI AWAL, SERTAKAN STRUKTURNYA LANGSUNG PADA BASE PRACTICE JADI BUKAN MEREKA YANG NULIS -->
+    <p>To carry out road repairs with a total length of "total_street_length" meters, Perumahan Graha Sentosa must prepare a total cost of Rp. "total_cost".</p>
 </body>
 
 </html>

@@ -1,70 +1,87 @@
 <?php
-// C2T5 PRACTICE 3
-require_once "Person.php";
-
-class RelativeFatMass extends Person
-{
-    private $rfmScore, $rfmCategory;
-
-    public function countRFM()
+    // C2T5 PRACTICE 3
+    class RelativeFatMass
     {
-        $genderOperandValue = $this->gender == "m" ? 64 : 74;
-        $this->rfmScore     = number_format($genderOperandValue - (20 * $this->height / $this->waistCircumference), 2);
-        $this->setRFMCategory($this->rfmScore);
-    }
-
-    private function setRFMCategory($rfmScore)
-    {
-        $categories = [
+        private array $categories = [
             "Extremely low level of fat",
             "Essential fat",
             "Athletes",
             "Fitness",
             "Average",
-            "Obese"
+            "Obese",
         ];
+        private float $score     = 0;
+        private string $category = "";
 
-        switch ($this->gender) {
-            case 'm':
-                if ($rfmScore < 2) {
-                    $this->rfmCategory = $categories[0];
-                } elseif ($rfmScore >= 2 && $rfmScore < 6) {
-                    $this->rfmCategory = $categories[1];
-                } elseif ($rfmScore >= 6 && $rfmScore < 14) {
-                    $this->rfmCategory = $categories[2];
-                } elseif ($rfmScore >= 14 && $rfmScore < 18) {
-                    $this->rfmCategory = $categories[3];
-                } elseif ($rfmScore >= 18 && $rfmScore < 24) {
-                    $this->rfmCategory = $categories[4];
-                } else {
-                    $this->rfmCategory = $categories[5];
-                }
-                break;
-            default:
-                if ($rfmScore < 10) {
-                    $this->rfmCategory = $categories[0];
-                } elseif ($rfmScore >= 10 && $rfmScore < 14) {
-                    $this->rfmCategory = $categories[1];
-                } elseif ($rfmScore >= 14 && $rfmScore < 21) {
-                    $this->rfmCategory = $categories[2];
-                } elseif ($rfmScore >= 21 && $rfmScore < 25) {
-                    $this->rfmCategory = $categories[3];
-                } elseif ($rfmScore >= 25 && $rfmScore < 32) {
-                    $this->rfmCategory = $categories[4];
-                } else {
-                    $this->rfmCategory = $categories[5];
-                }
-                break;
+        private string $gender = "m";
+
+        private float $height    = 0;
+        private float $waistSize = 0;
+
+        public function __construct(float $height, float $waistSize, string $gender)
+        {
+            $this->height    = $height;
+            $this->waistSize = $waistSize;
+            $this->gender    = $gender;
+        }
+
+        public function calculate(): void
+        {
+            if ($this->waistSize) {
+                $operandByGender = $this->gender === "m" ? 64 : 74;
+                $calculate       = $operandByGender - (20 * $this->height / $this->waistSize);
+                $roundRFMResult  = round($calculate, 2);
+
+                $this->score = $roundRFMResult;
+            }
+            
+            $this->category = $this->category();
+        }
+
+        private function maleCategory(): string 
+        {
+            if ($this->score < 2) return $this->categories[0];
+
+            if ($this->score < 6) return $this->categories[1];
+
+            if ($this->score < 14) return $this->categories[2];
+
+            if ($this->score < 18) return $this->categories[3];
+
+            if ($this->score < 24) return $this->categories[4];
+            
+            return $this->categories[5];
+        }
+
+        private function femaleCategory(): string 
+        {
+            if ($this->score < 10) return $this->categories[0];
+
+            if ($this->score < 14) return $this->categories[1];
+
+            if ($this->score < 21) return $this->categories[2];
+
+            if ($this->score < 25) return $this->categories[3];
+
+            if ($this->score < 32) return $this->categories[4];
+            
+            return $this->categories[5];
+        }
+        
+        private function category(): string
+        {
+            if ($this->gender === 'm') return $this->maleCategory();
+
+            return $this->femaleCategory();
+        }
+        
+        public function getScore(): float
+        {
+            return $this->score;
+        }
+
+        public function getCategory(): string
+        {
+            return $this->category;
         }
     }
-    
-    public function getRFMScore()
-    {
-        return $this->rfmScore;
-    }
-
-    public function getRFMCategory()
-    {
-        return $this->rfmCategory;
-    }
-}

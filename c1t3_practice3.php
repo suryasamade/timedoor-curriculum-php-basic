@@ -26,9 +26,16 @@ if (isset($_GET['lotus_street']) && !empty($_GET['lotus_street'])) {
     $lotusStreetLength = $_GET['lotus_street'];
 }
 
-if (isset($_GET['cash_ready'])) {
-    $isCashReady = true;
-}
+// DISKUSI MINGGU PERTAMA (KAMIS, 15 SEPTEMBER 2022) BERAKHIR DI C1T3-PRACTICE3 INI!
+
+// OPSI PERTAMA
+// if (isset($_GET['cash_ready'])) {
+//     $isCashReady = true;
+// }
+
+// OPSI KEDUA
+$isCashReady = isset($_GET['cash_ready']);
+var_dump($isCashReady);
 
 if (isset($_GET['unit'])) {
     switch ($_GET['unit']) {
@@ -83,6 +90,9 @@ $totalCost          = $costMaterial + $workerFee;
     <?php if ($totalStreetLength > 0) : ?>
         <p><?= "To carry out road repairs with a total length of {$totalStreetLength} meters, Perumahan Graha Sentosa budget is Rp. {$budget}. But, must prepare a total cost of Rp. {$totalCost}." ?></p>
 
+        <!-- PROSES CONDITIONAL TARUH DI PHP (DI ATAS) -->
+        <!-- PERBAIKI LOGIKA KONDISIONALNYA -->
+        <!-- BEFORE REVISE -->
         <?php if ($totalCost >= ($budget * 2)) : ?>
             <?php $isCashReady = false; ?>
             <p>To cover the lack of funds, apply for financial assistance to the local government.</p>
@@ -92,6 +102,21 @@ $totalCost          = $costMaterial + $workerFee;
         <?php else : ?>
             <p>The budget is sufficient, the source of self-supporting funds from the residents of Perumahan Graha Sentosa only</p>
         <?php endif; ?>
+        <!-- END -->
+
+        <!-- AFTER REVISE -->
+        <?php if ($totalCost > $budget) : ?>
+            <?php $isCashReady = false; ?>
+            
+            <?php if ($totalCost >= ($budget * 2)) : ?>
+                <p>To cover the lack of funds, apply for financial assistance to the local government.</p>
+            <?php else : ?>
+                <p>To cover the lack of funds, a fund-raising bazaar was held.</p>
+            <?php endif; ?>
+        <?php else : ?>
+            <p>The budget is sufficient, the source of self-supporting funds from the residents of Perumahan Graha Sentosa only</p>
+        <?php endif; ?>
+        <!-- END -->
 
         <?php if ($isCashReady) : ?>
             <p style="color:green;">Due to the availability of funds, the project will be implemented soon!</p>
