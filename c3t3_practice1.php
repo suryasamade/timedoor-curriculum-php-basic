@@ -3,41 +3,39 @@
 
 <?php
 // CONNECTING DATABASE AND CHECK THE STATUS
-require_once("./c3t3_config.php");
+    require_once "class/Person.php";
+    require_once "class/RelativeFatMass.php";
+    require_once "class/BodyMassIndex.php";
+    require_once "class/MySQLConnection.php";
 
-// if ($dbh) {
-//     var_dump("Database Connected!");
-// }
-// END
+    $config = require_once "c3t3_config.php";
 
-function input_checker($inputName)
-{
-    if (isset($_GET[$inputName])) {
-        return $_GET[$inputName];
-    } else {
-        return "null";
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+
+    function get_input(string $inputName, mixed $default = null): mixed
+    {
+        if (isset($_GET[$inputName])) return $_GET[$inputName];
+
+        return $default;
     }
-}
 
-$measure    = input_checker('measure');
-$name       = input_checker('name');
-$age        = input_checker('age');
-$gender     = input_checker('gender');
-$height     = input_checker('height');
-$weight     = input_checker('weight');
-$waistCircumference = input_checker('waist_circumference');
+    $name      = get_input('name', "");
+    $age       = get_input('age', 0);
+    $gender    = get_input('gender', "m");
+    $height    = get_input('height', 0);
+    $weight    = get_input('weight', 0);
+    $waistSize = get_input('waist_size', 0);
 
-if ($measure) {
-    if ($measure == "rfm") {
-        require_once "class/RelativeFatMass.php";
-        $objPerson = new RelativeFatMass($name, $age, $gender, $height, $weight, $waistCircumference);
-        $objPerson->countRFM();
-    } else {
-        require_once "class/BodyMassIndex.php";
-        $objPerson = new BodyMassIndex($name, $age, $gender, $height, $weight, $waistCircumference);
-        $objPerson->countBMI();
-    }
-}
+    $person = new Person($name, $age, $gender);
+    $person->bodyFact($height, $weight, $waistSize);
+
+    $bmi = new BodyMassIndex($height, $weight);
+    $bmiScore    = $bmi->getScore();
+    $bmiCategory = $bmi->getCategory();
+
+    $rfm = new RelativeFatMass($height, $waistSize, $gender);
+    $rfmScore    = $rfm->getScore();
+    $rfmCategory = $rfm->getCategory();
 ?>
 
 <!DOCTYPE html>
@@ -70,27 +68,24 @@ if ($measure) {
         <label for="weight">Weight</label>
         <input type="number" name="weight" id="weight" step="0.1" required>
         <br>
-        <label for="waist_circumference">Waist Circumference</label>
-        <input type="number" name="waist_circumference" id="waist_circumference" required>
-        <br>
-        <label for="measure">Measure</label>
-        <select name="measure" id="measure">
-            <option value="bmi">BMI</option>
-            <option value="rfm">RFM</option>
-        </select>
+        <label for="waist_size">Waist Size</label>
+        <input type="number" name="waist_size" id="waist_size" required>
         <br>
         <input type="submit" value="Count">
     </form>
 
-    <?php if ($measure): ?>
-        <h3>Calculation result is:</h3>
-        <?php if ($measure == "rfm"):?>
-            <p>RFM score <?= "<b>{$objPerson->getRFMScore()}%</b>, belongs to the category <b>{$objPerson->getRFMCategory()}</b>" ?></p>
-        <?php else: ?>
-            <p>BMI score <?= "<b>{$objPerson->getBMIScore()}</b>, belongs to the category <b>{$objPerson->getBMICategory()}</b>" ?></p>
-        <?php endif; ?>
-    <?php endif; ?>
-    
+    <p>User detail:</p>
+    <ul>
+        <li>Name : <?= $person->getName() ?></li>
+        <li>Age : <?= $person->getAge() ?></li>
+        <li>Gender : <?= $person->getGender() ?></li>
+        <li>Height : <?= $person->getHeight() ?></li>
+        <li>Weight : <?= $person->getWeight() ?></li>
+        <li>Waist Size : <?= $person->getWaistSize() ?></li>
+        <li>BMI score : <?= "<b>{$bmiScore}</b>, belongs to the category <b>{$bmiCategory}</b>" ?></li>
+        <li>RFM score : <?= "<b>{$rfmScore}%</b>, belongs to the category <b>{$rfmCategory}</b>" ?></li>
+    </ul>
+
 </body>
 
 </html>

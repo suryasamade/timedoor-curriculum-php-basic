@@ -1,4 +1,4 @@
-<!-- CASE -->
+<!-- APPLYING MATERIAL -->
 <!-- 
     menampilkan teks string dengan echo
 -->

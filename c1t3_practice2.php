@@ -6,60 +6,68 @@
 -->
 
 <?php
-$isCashReady            = false;
-$anggrekStreetLength    = 0;
-$kambojaStreetLength    = 0;
-$lotusStreetLength      = 0;
+    $isCashReady = false;
 
-// terapkan if-else-elseif
-// terapkan switch-case-break-default
-if (isset($_GET['anggrek_street'])) {
-    if (empty($_GET['anggrek_street'])) {
-    } else {
-        $anggrekStreetLength = $_GET['anggrek_street'];
+    $anggrekStreetLength = 0;
+    $kambojaStreetLength = 0;
+    $lotusStreetLength   = 0;
+
+    $costMaterial = 15000;
+    $workerFee    = 650000;
+
+    $meterKiloRatio  = 1000;
+    $meterCentiRatio = 100;
+    
+    // terapkan switch-case-break-default
+    if (isset($_GET['anggrek_street'])) {
+        if (empty($_GET['anggrek_street'])) {
+        } else {
+            $anggrekStreetLength = $_GET['anggrek_street'];
+        }
     }
-}
 
-if (isset($_GET['kamboja_street'])) {
-    if (empty($_GET['kamboja_street'])) {
-    } else {
-        $kambojaStreetLength = $_GET['kamboja_street'];
+    if (isset($_GET['kamboja_street'])) {
+        if (empty($_GET['kamboja_street'])) {
+        } else {
+            $kambojaStreetLength = $_GET['kamboja_street'];
+        }
     }
-}
 
-if (isset($_GET['lotus_street'])) {
-    if (empty($_GET['lotus_street'])) {
-    } else {
-        $lotusStreetLength = $_GET['lotus_street'];
+    if (isset($_GET['lotus_street'])) {
+        if (empty($_GET['lotus_street'])) {
+        } else {
+            $lotusStreetLength = $_GET['lotus_street'];
+        }
     }
-}
 
-// buatkan form input untuk variable ini
-if (isset($_GET['cash_ready'])) {
-    $isCashReady = true;
-}
+    // buatkan form input untuk variable ini
+    $isCashReady = isset($_GET['cash_ready']);
 
-if (isset($_GET['unit'])) {
-    switch ($_GET['unit']) {
-        case 'km':
-            $anggrekStreetLength    *= 1000;
-            $kambojaStreetLength    *= 1000;
-            $lotusStreetLength      *= 1000;
-            break;
-        case 'cm':
-            $anggrekStreetLength    /= 100;
-            $kambojaStreetLength    /= 100;
-            $lotusStreetLength      /= 100;
-            break;
-        default:
-            break;
+    if (isset($_GET['unit'])) {
+        switch ($_GET['unit']) {
+            case 'km':
+                $anggrekStreetLength *= $meterKiloRatio;
+                $kambojaStreetLength *= $meterKiloRatio;
+                $lotusStreetLength   *= $meterKiloRatio;
+                break;
+            case 'cm':
+                $anggrekStreetLength /= $meterCentiRatio;
+                $kambojaStreetLength /= $meterCentiRatio;
+                $lotusStreetLength   /= $meterCentiRatio;
+                break;
+            default:
+                break;
+        }
     }
-}
 
-$totalStreetLength  = $anggrekStreetLength + $kambojaStreetLength + $lotusStreetLength;
-$costMaterial       = $totalStreetLength * 15000;
-$workerFee          = ($totalStreetLength / 1000) * 650000;
-$totalCost          = $costMaterial + $workerFee;
+    $totalStreetLength = $anggrekStreetLength + $kambojaStreetLength + $lotusStreetLength;
+
+    $totalCostMaterial = $totalStreetLength * $costMaterial;
+    
+    $totalStreetLengthInKilo = $totalStreetLength / $meterKiloRatio;
+    $totalWorkerFee          = $totalStreetLengthInKilo * $workerFee;
+    
+    $totalCost = $costMaterial + $workerFee;
 ?>
 
 <!DOCTYPE html>
@@ -91,16 +99,16 @@ $totalCost          = $costMaterial + $workerFee;
         <input type="submit" value="Count">
     </form>
 
-    <?php if ($totalStreetLength > 0) { ?>
-        <p><?= "To carry out road repairs with a total length of {$totalStreetLength} meters, Perumahan Graha Sentosa must prepare a total cost of Rp. {$totalCost}." ?></p>
+    <?php if ($totalStreetLength > 0): ?>
+        <p>Description: <?= "To carry out road repairs with a total length of {$totalStreetLength} meters, Perumahan Graha Sentosa must prepare a total cost of Rp. {$totalCost}." ?></p>
 
-        <!-- PENERAPAN ALTERNATIVE SYNTAX-NYA MANA? -->
-        <?php if ($isCashReady) { ?>
-            <p style="color:green;">Due to the availability of funds, the project will be implemented soon!</p>
-        <?php } else { ?>
-            <p style="color:red;">However, project implementation will be postponed until funds are available.</p>
-        <?php } ?>
-    <?php } ?>
+        <?php if ($isCashReady): ?>
+            <p>Project status: <span style="color:green;">The project will be implemented soon!</span></p>
+        <?php else: ?>
+            <p>Project status: <span style="color:red;">The project implementation will be postponed until funds are available.</span></p>
+        <?php endif ?>
+
+    <?php endif ?>
 
 </body>
 

@@ -2,10 +2,17 @@
 <!-- VALIDATION: TAMBAH VALIDASI UNTUK MIN/MAX KARAKTER INPUT, GANTI MENJADI POST METHOD -->
 
 <?php
-    require_once "c3t4_config.php";
+    require_once "class/MySQLConnection.php";
+
+    $config = require_once "c3t4_config.php";
+
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+    $connection = $connection->getConnection();
     
-    $querySelectPersons = $dbh->query("SELECT * FROM persons");
-    $persons = $querySelectPersons->fetchAll();
+    // $selectsQuery = "SELECT * FROM persons";
+    $selectsQuery = "SELECT * FROM persons JOIN rfm ON persons.id_rfm = rfm.id JOIN bmi ON persons.id_bmi = bmi.id";
+    $query = $connection->query($selectsQuery);
+    $persons = $query->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -38,10 +45,10 @@
         <label for="weight">Weight</label>
         <input type="number" name="weight" id="weight" step="0.1" required>
         <br>
-        <label for="waist_circumference">Waist Circumference</label>
-        <input type="number" name="waist_circumference" id="waist_circumference" required>
+        <label for="waist_size">Waist Size</label>
+        <input type="number" name="waist_size" id="waist_size" required>
         <br>
-        <input type="submit" value="Count & Save">
+        <input type="submit" value="Save">
     </form>
 
     <br>
@@ -49,36 +56,37 @@
     <table border="1">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>No.</th>
                 <th>Name</th>
                 <th>Age</th>
                 <th>Gender</th>
                 <th>Height (cm)</th>
                 <th>Weight (kg)</th>
-                <th>Waist Circumference (cm)</th>
-                <th>RFM Measure</th>
-                <th>RFM Category</th>
-                <th>BMI Measure</th>
+                <th>Waist Size (cm)</th>
+                <th>BMI Score</th>
                 <th>BMI Category</th>
+                <th>RFM Score</th>
+                <th>RFM Category</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach($persons as $person): ?>
+            <?php 
+                foreach($persons as $idx => $person):
+                    $id = $person['id'];
+            ?>
             <tr>
-                <?php $id = $person["id"]; ?>
-                <td><?= $id; ?></td>
+                <td><?= $idx+1; ?></td>
                 <td><?= $person["name"]; ?></td>
                 <td><?= $person["age"]; ?></td>
                 <td><?= $person["gender"] === "m" ? "Male" : "Female"; ?></td>
                 <td><?= $person["height"]; ?></td>
                 <td><?= $person["weight"]; ?></td>
-                <td><?= $person["waist_circumference"]; ?></td>
-                <!-- INSERT KE NEW COLUMN -->
-                <td><?= $person["score_rfm"]; ?></td>
-                <td><?= $person["category_rfm"]; ?></td>
+                <td><?= $person["waist_size"]; ?></td>
                 <td><?= $person["score_bmi"]; ?></td>
                 <td><?= $person["category_bmi"]; ?></td>
+                <td><?= $person["score_rfm"]; ?></td>
+                <td><?= $person["category_rfm"]; ?></td>
                 <td>
                     <a href=<?="c3t4_practice_edit.php?id={$id}"?>>Edit</a> | <a href=<?="c3t4_practice_delete.php?id={$id}"?>>Delete</a>
                 </td>

@@ -7,7 +7,7 @@
 
         public function countRFM()
         {
-            $genderOperandValue = $this->gender == "m" ? 64 : 74;
+            $genderOperandValue = $this->gender == "m" ? 64 : 76;
             $this->rfmScore     = number_format($genderOperandValue - (20 * $this->height / $this->waistCircumference), 2);
             $this->setRFMCategory($this->rfmScore);
         }

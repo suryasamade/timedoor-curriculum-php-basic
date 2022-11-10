@@ -3,13 +3,13 @@ $color = 'red';
 
 // switch ($color) {
 //     case 'black':
-//         echo "its black";
+//         echo "It's BLACK.";
 //         break;
 //     case 'red':
-//         echo "its red";
+//         echo "It's RED.";
 //         break;
 //     default:
-//         echo "its white";
+//         echo "It's WHITE.";
 //         break;
 // }
 ?>

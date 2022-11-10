@@ -8,17 +8,12 @@
 -->
 
 <?php
-// HARDCODE AJA DULU, BELUM CONCAT
-// BELUM DIAJARIN MANIPULASI TAPI KOK SDH MAKE CONCATE
-// SPASI UNTUK VARIABLE JANGAN KEJAUHAN/TERLALU LEBAR
-// INGAT BERIKAN INDENT PADA KODE PHP
-// BEST PRACTICE: APIT VARIABLE DI DALAM STRING DENGAN KURAWAL
-    $name            = "Alex Ferguson";
-    $address         = "Glasgow, UK";
-    $bornDate        = "31 December 1941";
-    $job             = "Football Manager";
-    $bioTitle        = "Biodata $name";
-    $bioDesctription = "A $job of Manchester United Football Club. He was born on $bornDate and live at $address.";
+    $name     = "Alex Ferguson";
+    $address  = "Glasgow, UK";
+    $bornDate = "31 December 1941";
+    $job      = "Football Manager";
+    $bioTitle = "Biodata of Alex Ferguson";
+    $bioDesc  = "A Football Manager of Manchester United Football Club. He was born on 31 December 1941 and live at Glasgow, UK.";
 ?>
 
 <!DOCTYPE html>

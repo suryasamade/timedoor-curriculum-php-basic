@@ -1,53 +1,49 @@
 <?php
+    require_once "class/RelativeFatMass.php";
+    require_once "class/BodyMassIndex.php";
+    require_once "class/MySQLConnection.php";
+    
+    $config = require_once "c3t3_config.php";
 
-require_once "c3t3_config.php";
-require_once "class/RelativeFatMass.php";
-require_once "class/BodyMassIndex.php";
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+    $connection = $connection->getConnection();
 
-function input_checker($inputName)
-{
-    if (isset($_GET[$inputName])) {
-        return $_GET[$inputName];
-    } else {
-        return "null";
+    function get_input(string $inputName, mixed $default = null): mixed
+    {
+        if (isset($_GET[$inputName])) return $_GET[$inputName];
+
+        return $default;
     }
-}
 
-// $measure    = input_checker('measure');
-$name       = input_checker('name');
-$age        = input_checker('age');
-$gender     = input_checker('gender');
-$height     = input_checker('height');
-$weight     = input_checker('weight');
-$waistCircumference = input_checker('waist_circumference');
+    $name      = get_input('name', '');
+    $age       = get_input('age', 0);
+    $gender    = get_input('gender', 'm');
+    $height    = get_input('height', 0);
+    $weight    = get_input('weight', 0);
+    $waistSize = get_input('waist_size', 0);
 
-$rfmObj = new RelativeFatMass($name, $age, $gender, $height, $weight, $waistCircumference);
-$bmiObj = new BodyMassIndex($name, $age, $gender, $height, $weight, $waistCircumference);
-$rfmObj->countRFM();
-$bmiObj->countBMI();
+    $bmi = new BodyMassIndex($height, $weight);
 
-// PREPARE METHOD with UNNAMED-PLACEHOLDER & EXECUTE
-$timestamp = date('Y-m-d H:i:s');
-$sql = "INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-$values = [
-    NULL, 
-    $name, 
-    $age, 
-    $gender, 
-    $height, 
-    $weight, 
-    $waistCircumference, 
-    $rfmObj->getRFMScore(), 
-    $rfmObj->getRFMCategory(), 
-    $bmiObj->getBMIScore(), 
-    $bmiObj->getBMICategory(), 
-    $timestamp, 
-    $timestamp
-];
-$insertQuery = $dbh->prepare($sql);
-$insertData = $insertQuery->execute($values);
+    $rfm = new RelativeFatMass($height, $waistSize, $gender);
 
-if ($insertData) {
-    echo "new record successfully created!";
-    header('Refresh:3; url=c3t3_practice2.php');
-}
+    // PREPARE METHOD with UNNAMED-PLACEHOLDER & EXECUTE
+    $insertQuery = "INSERT INTO persons (name, age, gender, height, weight, waist_size, rfm_score, rfm_category, bmi_score, bmi_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    $values      = [
+        $name, 
+        $age, 
+        $gender, 
+        $height, 
+        $weight, 
+        $waistSize, 
+        $rfm->getScore(), 
+        $rfm->getCategory(), 
+        $bmi->getScore(), 
+        $bmi->getCategory()
+    ];
+
+    $prepareQuery = $connection->prepare($insertQuery);
+
+    if ($prepareQuery->execute($values)) {
+        echo "new record successfully created!";
+        header('Refresh:3; url=c3t3_practice2.php');
+    }

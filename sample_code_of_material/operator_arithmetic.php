@@ -27,9 +27,8 @@
 
 
 // MODULUS
-// $remainderOfDiv     = 365 % 12;
-
-// echo "If each month a year consists of 30 days, we have remainder days from total in a year is $remainderOfDiv days";
+// $restOfDiv = 365 % 12;
+// echo "We have {$restOfDiv} as rest after divide 365 by 12";
 
 
 

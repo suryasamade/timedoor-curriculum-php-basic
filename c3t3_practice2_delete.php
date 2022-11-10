@@ -1,17 +1,19 @@
 <?php
+    require_once "class/MySQLConnection.php";
 
-require_once "c3t3_config.php";
+    $config = require_once "c3t3_config.php";
 
-$id = $_GET['id'];
-$selectQuery = $dbh->prepare("SELECT * FROM persons WHERE id=?");
-$selectQuery->execute([$id]);
-$person = $selectQuery->fetch();
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+    $connection = $connection->getConnection();
 
-$deleteQuery = $dbh->prepare("DELETE FROM persons WHERE id=?");
-$delete = $deleteQuery->execute([$id]);
+    // CEK JUGA 'ID'NYA SEBELUM DI-DELETE
 
-if ($delete) {
-    echo "{$person['name']}'s data is successfully deleted!";
-    header('Refresh:3; url=c3t3_practice2.php');
-}
-?>
+    $id = $_GET['id'];
+
+    $deleteQuery  = "DELETE FROM persons WHERE id=?";
+    $prepareQuery = $connection->prepare($deleteQuery);
+
+    if ($prepareQuery->execute([$id])) {
+        echo "Data is successfully deleted!";
+        header('Refresh:3; url=c3t3_practice2.php');
+    }

@@ -2,14 +2,38 @@
 <!-- SELECT, INSERT, UPDATE, DELETE -->
 
 <?php
+    require_once "class/MySQLConnection.php";
+    require_once "class/Person.php";
     // CONNECTING DATABASE AND CHECK THE STATUS
-    require_once "c3t3_config.php";
+    $config = require_once "c3t3_config.php";
 
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+    $connection = $connection->getConnection();
     // END
+    // SEBAGAI OPSI, CONFIG FILE DIATAS DIJADIKAN/DIMASUKKAN JADI SATU FILE KHUSUS
+    // MAKA UNTUK MENGGUNAKANNYA, HANYA PERLU ME-REQUIRE SATU FILE ITU SAJA 
+    // DAN LANGSUNG DIJADIKAN/DIMASUKKAN SEBAGAI SEBUAH VARIABLE
 
     // SELECT ALL PERSONS TABLE
-    $querySelectPersons = $dbh->query("SELECT * FROM persons");
-    $persons = $querySelectPersons->fetchAll();
+    $selectsQuery = "SELECT * FROM persons";
+    $query        = $connection->query($selectsQuery);
+
+    $persons = [];
+
+    foreach ($query->fetchAll() as $data) {
+        $person = new Person(
+            $data['name'],
+            $data['age'],
+            $data['gender'],
+        );
+
+        // $person->setDataFromDB($data);
+        $person->setId($data['id']);
+        $person->bodyFact($data['height'], $data['weight'], $data['waist_size']);
+        $person->massIndex($data['bmi_score'], $data['bmi_category'], $data['rfm_score'], $data['rfm_category']);
+
+        $persons[] = $person;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -42,16 +66,10 @@
         <label for="weight">Weight</label>
         <input type="number" name="weight" id="weight" step="0.1" required>
         <br>
-        <label for="waist_circumference">Waist Circumference</label>
-        <input type="number" name="waist_circumference" id="waist_circumference" required>
+        <label for="waist_size">Waist Size</label>
+        <input type="number" name="waist_size" id="waist_size" required>
         <br>
-        <!-- <label for="measure">Measure</label> -->
-        <!-- <select name="measure" id="measure">
-            <option value="bmi">BMI</option>
-            <option value="rfm">RFM</option>
-        </select> -->
-        <br>
-        <input type="submit" value="Count & Save">
+        <input type="submit" value="Save">
     </form>
 
     <br>
@@ -59,41 +77,45 @@
     <table border="1">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>No.</th>
                 <th>Name</th>
                 <th>Age</th>
                 <th>Gender</th>
                 <th>Height (cm)</th>
                 <th>Weight (kg)</th>
-                <th>Waist Circumference (cm)</th>
-                <th>RFM Measure</th>
-                <th>RFM Category</th>
-                <th>BMI Measure</th>
+                <th>Waist Size (cm)</th>
+                <th>BMI Score</th>
                 <th>BMI Category</th>
+                <th>RFM Score</th>
+                <th>RFM Category</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach($persons as $person): ?>
+            <?php 
+                foreach($persons as $idx => $person):
+            ?>
             <tr>
-                <?php $id = $person["id"]; ?>
-                <td><?= $id; ?></td>
-                <td><?= $person["name"]; ?></td>
-                <td><?= $person["age"]; ?></td>
-                <td><?= $person["gender"] === "m" ? "Male" : "Female"; ?></td>
-                <td><?= $person["height"]; ?></td>
-                <td><?= $person["weight"]; ?></td>
-                <td><?= $person["waist_circumference"]; ?></td>
+                <td><?= $idx+1; ?></td>
+                <td><?= $person->getName() ?></td>
+                <td><?= $person->getAge() ?></td>
+                <td><?= $person->getGender() ?></td>
+                <td><?= $person->getHeight() ?></td>
+                <td><?= $person->getWeight() ?></td>
+                <td><?= $person->getWaistSize() ?></td>
                 <!-- INSERT KE NEW COLUMN -->
-                <td><?= $person["score_rfm"]; ?></td>
-                <td><?= $person["category_rfm"]; ?></td>
-                <td><?= $person["score_bmi"]; ?></td>
-                <td><?= $person["category_bmi"]; ?></td>
+                <!-- INI GIMANA CARANYA, APAKAH HITUNG ULANG ATAU BUAT METHOD SETTER-GETTER BARU DI MASING-MASING CLASS -->
+                <!-- ATAU GIMANA??? -->
+                <td><?= $person->getBMIScore() ?></td>
+                <td><?= $person->getBMICategory() ?></td>
+                <td><?= $person->getRFMScore() ?></td>
+                <td><?= $person->getRFMCategory() ?></td>
                 <td>
-                    <a href=<?="c3t3_practice2_edit.php?id={$id}"?>>Edit</a> | <a href=<?="c3t3_practice2_delete.php?id={$id}"?>>Delete</a>
+                    <a href=<?="c3t3_practice2_edit.php?id={$person->getId()}"?> >Edit</a> | 
+                    <a href=<?="c3t3_practice2_delete.php?id={$person->getId()}"?> >Delete</a>
                 </td>
             </tr>
-            <?php endforeach; ?>
+            <?php endforeach ?>
         </tbody>
     </table>
 </body>

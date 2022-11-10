@@ -6,19 +6,27 @@
 -->
 
 <?php
+    $anggrekStreetLength = $_GET['anggrek_street'];
+    $kambojaStreetLength = $_GET['kamboja_street'];
+    $lotusStreetLength   = $_GET['lotus_street'];
+    
+    $costMaterial = 15000;
+    $workerFee    = 650000;
 
-$anggrekStreetLength  = $_GET['anggrek_street'];
-$kambojaStreetLength  = $_GET['kamboja_street'];
-$lotusStreetLength    = $_GET['lotus_street'];
+    $meterKiloRatio  = 1000;
+    $meterCentiRatio = 100;
 
-$anggrekStreetLength  *= 1000;
-$lotusStreetLength    /= 100;
+    $anggrekStreetLength *= $meterKiloRatio;
+    $lotusStreetLength   /= $meterCentiRatio;
 
-$totalStreetLength  = $anggrekStreetLength + $kambojaStreetLength + $lotusStreetLength;
-$costMaterial       = $totalStreetLength * 15000;
-$workerFee          = ($totalStreetLength / 1000) * 650000;
-$totalCost          = $costMaterial + $workerFee;
+    $totalStreetLength = $anggrekStreetLength + $kambojaStreetLength + $lotusStreetLength;
 
+    $totalCostMaterial = $totalStreetLength * $costMaterial;
+
+    $totalStreetLengthInKilo = $totalStreetLength / $meterKiloRatio;
+    $totalWorkerFee          = $totalStreetLengthInKilo * $workerFee;
+
+    $totalCost = $totalCostMaterial + $totalWorkerFee;
 ?>
 
 <!DOCTYPE html>
@@ -34,18 +42,15 @@ $totalCost          = $costMaterial + $workerFee;
     <form action="" method="GET">
         <!-- PADA BASE PRACTICE, SEDIAKAN LABEL SAJA, INPUT BIARKAN MEREKA YANG BUAT SENDIRI -->
         <label for="anggrek">Anggrek Street (meter)</label>
-        <input type="number" step="0.1" name="anggrek_street" id="anggrek"><br>
+        <input type="number" step="0.1" name="anggrek_street" id="anggrek" required><br>
         <label for="kamboja">Kamboja Street (meter)</label>
-        <input type="number" step="0.1" name="kamboja_street" id="kamboja"><br>
+        <input type="number" step="0.1" name="kamboja_street" id="kamboja" required><br>
         <label for="lotus">Lotus Street (meter)</label>
-        <input type="number" step="0.1" name="lotus_street" id="lotus"><br>
+        <input type="number" step="0.1" name="lotus_street" id="lotus" required><br>
         <input type="submit" value="Count">
     </form>
 
     <p><?= "To carry out road repairs with a total length of {$totalStreetLength} meters, Perumahan Graha Sentosa must prepare a total cost of Rp. {$totalCost}." ?></p>
-    <!-- PADA BASE, BERIKAN MEREKA PARAGRAPH MENTAHAN, JADI TUGAS MEREKA UNTUK MEMASUKKAN NILAI VAR KE DALAMNYA -->
-    <!-- UNTUK TEMPLATE LAYOUT, PAKAI CDN BOOTSTRAP DARI AWAL, SERTAKAN STRUKTURNYA LANGSUNG PADA BASE PRACTICE JADI BUKAN MEREKA YANG NULIS -->
-    <p>To carry out road repairs with a total length of "total_street_length" meters, Perumahan Graha Sentosa must prepare a total cost of Rp. "total_cost".</p>
 </body>
 
 </html>

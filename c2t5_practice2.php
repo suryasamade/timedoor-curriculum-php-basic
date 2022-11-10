@@ -15,9 +15,9 @@
         // PISAHKAN/BUAT SETTER UNTUK TIAP PROPERTY
         public function bio(string $name, int $age, string $gender): void 
         {
-            $this->name   = $name;
+            $this->name   = $name ?: "-";
             $this->age    = $age;
-            $this->gender = $gender;
+            $this->gender = $gender === "m" ? "Male" : "Female";
         }
 
         public function bodyFact(float $height, float $weight, float $waistSize): void 
@@ -36,17 +36,16 @@
         public function calculate(float $height, float $weight): void
         {
             if ($height) {
-                $heightInMeter  = $height / 100;
-                $calculate      = $weight / ($heightInMeter ** 2);
-                $roundBMIResult = round($calculate, 2);
+                $heightInMeter = $height / 100;
+                $result        = $weight / ($heightInMeter ** 2);
 
-                $this->score = $roundBMIResult;
+                $this->score = round($result, 2);
             }
 
-            $this->category = $this->category();
+            $this->category = $this->determineCategory();
         }
 
-        public function category(): string
+        public function determineCategory(): string
         {
             if ($this->score >= 40) return "Obese (Class III)";
 
@@ -82,15 +81,22 @@
         public function calculate(float $height, float $waistSize, string $gender): void
         {
             if ($waistSize) {
-                $operandByGender = $gender === "m" ? 64 : 74;
-                // JELASKAN MAKSUD ANGKA-ANGKA DAN BAGIAN-BAGIAN RUMUS INI
-                $calculate       = $operandByGender - (20 * $height / $waistSize);
-                $roundRFMResult  = round($calculate, 2);
+                $result = $this->baseIndex($gender) - 20 * ($height / $waistSize);
 
-                $this->score = $roundRFMResult;
+                $this->score = round($result, 2);
             }
             
-            $this->category = $this->category($gender);
+            $this->category = $this->isGenderMale($gender) ? $this->maleCategory() : $this->femaleCategory();
+        }
+
+        public function isGenderMale(string $gender): bool
+        {
+            return $gender === "m";
+        }
+
+        public function baseIndex(string $gender): int
+        {
+            return $this->isGenderMale($gender) ? 64 : 76;
         }
 
         public function maleCategory(): string
@@ -122,20 +128,11 @@
             
             return $this->categories[5];
         }
-
-        public function category(string $gender): string
-        {
-            if ($gender === 'm') return $this->maleCategory();
-
-            return $this->femaleCategory();
-        }
     }
 
-    function get_input(string $inputName, mixed $default = null) : mixed
+    function get_input(string $inputName, mixed $default = null): mixed
     {
-        if (isset($_GET[$inputName])) {
-            return $_GET[$inputName];
-        } 
+        if (isset($_GET[$inputName])) return $_GET[$inputName]; 
 
         return $default;
     }

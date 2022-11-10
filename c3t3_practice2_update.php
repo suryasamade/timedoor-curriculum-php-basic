@@ -1,52 +1,55 @@
 <?php
-    require_once "c3t3_config.php";
     require_once "class/RelativeFatMass.php";
     require_once "class/BodyMassIndex.php";
+    require_once "class/MySQLConnection.php";
 
-    function input_checker($inputName)
+    $config = require_once "c3t3_config.php";
+
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+    $connection = $connection->getConnection();
+
+    function get_input(string $inputName, mixed $default = null): mixed
     {
-        if (isset($_GET[$inputName])) {
-            return $_GET[$inputName];
-        } else {
-            return "null";
-        }
+        if (isset($_GET[$inputName])) return $_GET[$inputName];
+
+        return $default;
     }
 
-    $id         = input_checker('id');
-    $name       = input_checker('name');
-    $age        = input_checker('age');
-    $gender     = input_checker('gender');
-    $height     = input_checker('height');
-    $weight     = input_checker('weight');
-    $waistCircumference = input_checker('waist_circumference');
+    // LAKUKAN PENGECEKAN 'ID' DAHULU DISINI, 
+    // KALO 'ID' TIDAK ADA LANGSUNG BERIKAN WARNING BERUPA 'ECHO' DAN die()
 
-    $rfmObj = new RelativeFatMass($name, $age, $gender, $height, $weight, $waistCircumference);
-    $bmiObj = new BodyMassIndex($name, $age, $gender, $height, $weight, $waistCircumference);
-    $rfmObj->countRFM();
-    $bmiObj->countBMI();
+    $id        = get_input('id');
+    $name      = get_input('name', '');
+    $age       = get_input('age', 0);
+    $gender    = get_input('gender', 'm');
+    $height    = get_input('height', 0);
+    $weight    = get_input('weight', 0);
+    $waistSize = get_input('waist_size', 0);
+
+    $bmi = new BodyMassIndex($height, $weight);
+
+    $rfm = new RelativeFatMass($height, $waistSize, $gender);
 
     // PREPARE METHOD with UNNAMED-PLACEHOLDER & EXECUTE
     $timestamp = date('Y-m-d H:i:s');
-    $sql = "UPDATE persons SET name=?, age=?, gender=?, height=?, weight=?, waist_circumference=?, score_rfm=?, category_rfm=?, score_bmi=?, category_bmi=?, updated_at=? WHERE id=?;";
+    $updateQuery = "UPDATE persons SET name=?, age=?, gender=?, height=?, weight=?, waist_size=?, score_rfm=?, category_rfm=?, score_bmi=?, category_bmi=? WHERE id=?;";
     $values = [
         $name, 
         $age, 
         $gender, 
         $height, 
         $weight, 
-        $waistCircumference, 
-        $rfmObj->getRFMScore(), 
-        $rfmObj->getRFMCategory(), 
-        $bmiObj->getBMIScore(), 
-        $bmiObj->getBMICategory(), 
-        $timestamp, 
+        $waistSize, 
+        $rfm->getScore(), 
+        $rfm->getCategory(), 
+        $bmi->getScore(), 
+        $bmi->getCategory(),
         $id
     ];
     
-    $updateQuery = $dbh->prepare($sql);
-    $updateData = $updateQuery->execute($values);
+    $prepareQuery = $connection->prepare($updateQuery);
 
-    if ($updateData) {
-        echo "{$name} successfully updated!";
+    if ($prepareQuery->execute($values)) {
+        echo "data is successfully updated!";
         header('Refresh:3; url=c3t3_practice2.php');
     }

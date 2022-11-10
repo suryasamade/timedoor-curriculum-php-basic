@@ -5,7 +5,7 @@
 // - TYPE CASTING
 
 
-    function validation(array $listInput) {
+    function validation(array $listInput): array {
         $request = $_REQUEST;
         $validationResults = [];
 
@@ -28,7 +28,7 @@
                 }
                 
                 if ($rule === "gender") {
-                    if (is_gender($request[$input]) === false) {
+                    if (is_gender_valid($request[$input]) === false) {
                         array_push($inputError, "Input {$input} is not on right value");
                     }
                 }
@@ -40,19 +40,25 @@
         }
 
         return $validationResults;
-
     }
 
-    function is_required($value) {
+    function is_required(mixed $value): bool {
         return (bool) trim($value);
     }
 
-    function is_gender($value) {
+    function is_gender_valid(string $value): bool {
         return $value === "m" || $value === "f";
     }
 
-    function error_message(array $errors, string $input) {
-        if ($_REQUEST && isset($errors[$input])) {
-            return $errors[$input][0];
-        }
+    function error_message(array $errors, string $input): ?string {
+        if (!($_REQUEST && isset($errors[$input]))) return null;
+        
+        return $errors[$input][0];
+    }
+
+    function is_valid(array $rules): bool
+    {
+        if (validation($rules)) return false;
+
+        return true;
     }

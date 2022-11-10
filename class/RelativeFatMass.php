@@ -1,6 +1,8 @@
 <?php
     // C2T5 PRACTICE 3
-    class RelativeFatMass
+    require_once "MassIndex.php";
+
+    class RelativeFatMass extends MassIndex
     {
         private array $categories = [
             "Extremely low level of fat",
@@ -10,8 +12,6 @@
             "Average",
             "Obese",
         ];
-        private float $score     = 0;
-        private string $category = "";
 
         private string $gender = "m";
 
@@ -20,22 +20,51 @@
 
         public function __construct(float $height, float $waistSize, string $gender)
         {
-            $this->height    = $height;
-            $this->waistSize = $waistSize;
-            $this->gender    = $gender;
+            $this->gender    = $this->setGender($gender);
+            $this->height    = $this->setHeight($height);
+            $this->waistSize = $this->setWaistSize($waistSize);
         }
 
-        public function calculate(): void
+        private function setGender(string $gender): string
+        {
+            if ($gender !== "m" && $gender !== "f") return "m";
+
+            return $gender;
+        }
+
+        private function setHeight(float $height): float
+        {
+            if ($height < 0) return 0;
+
+            return $height;
+        }
+
+        private function setWaistSize(float $waistSize): float
+        {
+            if ($waistSize < 0) return 0;
+
+            return $waistSize;
+        }
+
+        protected function calculate(): void
         {
             if ($this->waistSize) {
-                $operandByGender = $this->gender === "m" ? 64 : 74;
-                $calculate       = $operandByGender - (20 * $this->height / $this->waistSize);
-                $roundRFMResult  = round($calculate, 2);
+                $result = $this->baseIndex() - 20 * ($this->height / $this->waistSize);
 
-                $this->score = $roundRFMResult;
+                $this->score = round($result, 2);
             }
             
-            $this->category = $this->category();
+            $this->category = $this->isGenderMale() ? $this->maleCategory() : $this->femaleCategory();
+        }
+
+        private function isGenderMale(): bool
+        {
+            return $this->gender === "m";
+        }
+
+        private function baseIndex(): int
+        {
+            return $this->isGenderMale() ? 64 : 76;
         }
 
         private function maleCategory(): string 
@@ -66,22 +95,5 @@
             if ($this->score < 32) return $this->categories[4];
             
             return $this->categories[5];
-        }
-        
-        private function category(): string
-        {
-            if ($this->gender === 'm') return $this->maleCategory();
-
-            return $this->femaleCategory();
-        }
-        
-        public function getScore(): float
-        {
-            return $this->score;
-        }
-
-        public function getCategory(): string
-        {
-            return $this->category;
         }
     }

@@ -16,15 +16,12 @@
         public float $waistSize = 0;
     }
 
-
     // TERAPKAN TYPE HINTING (PARAMETER & OUTPUT) PADA FUNCTION
     // make function to validation input form
     function get_input(string $inputName, mixed $default = null) : mixed
     {
         // TERAPKAN KONSEP EARLY RETURN
-        if (isset($_GET[$inputName])) {
-            return $_GET[$inputName];
-        } 
+        if (isset($_GET[$inputName])) return $_GET[$inputName]; 
 
         return $default;
     }

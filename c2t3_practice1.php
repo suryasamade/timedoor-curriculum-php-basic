@@ -7,15 +7,15 @@
 <!-- masukkan dan kumpulkan tiap nilai hasil rata-rata tersebut ke dalam sebuah array -->
 
 <?php
-$examScores = [78, 77, 92, 84, 63, 80];
-$sumScores  = 0;
-// BEST PRACTISE: BERIKAN SPACES SATU LINE ANTARA CONDITIONING/LOOP/BREAK/RETURN JIKA SUDAH DI LUAR SCOPE, SEPERTI KODE DI BAWAH
+    $examScores     = [78, 77, 92, 84, 63, 80];
+    $totalExamScore = count($examScores);
+    $sumScores      = 0;
 
-for ($i = 0; $i < count($examScores); $i++) {
-    $sumScores += $examScores[$i];
-}
+    for ($i = 0; $i < $totalExamScore; $i++) {
+        $sumScores += $examScores[$i];
+    }
 
-$averageOfScores = $sumScores / count($examScores);
+    $averageScores = $sumScores / $totalExamScore;
 ?>
 
 <!DOCTYPE html>
@@ -29,12 +29,12 @@ $averageOfScores = $sumScores / count($examScores);
     <h1>Students Exam Score</h1>
     <p>List of the students score!</p>
     <ol>
-        <?php for ($i = 0; $i < count($examScores); $i++) : ?>
+        <?php for ($i = 0; $i < count($examScores); $i++): ?>
             <?php $studentNumber = $i + 1; ?>
             <li><?= "Student{$studentNumber}'s score is $examScores[$i]." ?></li>
         <?php endfor; ?>
     </ol>
-    <p>And... average of all those students score is <b><?= $averageOfScores ?></b></p>
+    <p>And... average of all those students score is <b><?= $averageScores ?></b></p>
 </body>
 
 </html>

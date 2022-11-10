@@ -3,14 +3,12 @@
 
 <?php
     require_once "class/Person.php";
-    require_once "class/RelativeFatMass.php";
     require_once "class/BodyMassIndex.php";
+    require_once "class/RelativeFatMass.php";
 
-    function get_input(string $inputName, mixed $default = null) : mixed
+    function get_input(string $inputName, mixed $default = null): mixed
     {
-        if (isset($_GET[$inputName])) {
-            return $_GET[$inputName];
-        } 
+        if (isset($_GET[$inputName])) return $_GET[$inputName];
 
         return $default;
     }
@@ -26,12 +24,10 @@
     $person->bodyFact($height, $weight, $waistSize);
 
     $bmi = new BodyMassIndex($height, $weight);
-    $bmi->calculate();
     $bmiScore    = $bmi->getScore();
     $bmiCategory = $bmi->getCategory();
 
     $rfm = new RelativeFatMass($height, $waistSize, $gender);
-    $rfm->calculate();
     $rfmScore    = $rfm->getScore();
     $rfmCategory = $rfm->getCategory();
 ?>

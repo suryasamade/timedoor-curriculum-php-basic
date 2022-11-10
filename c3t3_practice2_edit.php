@@ -1,11 +1,22 @@
 <?php
+    require_once "class/MySQLConnection.php";
 
-require_once "c3t3_config.php";
+    $config = require_once "c3t3_config.php";
 
-$id = $_GET['id'];
-$selectQuery = $dbh->prepare("SELECT * FROM persons WHERE id=?");
-$selectQuery->execute([$id]);
-$person = $selectQuery->fetch();
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+    $connection = $connection->getConnection();
+
+    $id = $_GET['id'];
+
+    $selectQuery  = "SELECT * FROM persons WHERE id=?";
+    $prepareQuery = $connection->prepare($selectQuery);
+    $prepareQuery->execute([$id]);
+    $person = $prepareQuery->fetch();
+
+    if ($person) {
+        // override variable person
+        // $person = new Person;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -38,9 +49,8 @@ $person = $selectQuery->fetch();
         <label for="weight">Weight</label>
         <input type="number" name="weight" id="weight" step="0.1" value="<?= $person['weight'] ?>" required>
         <br>
-        <label for="waist_circumference">Waist Circumference</label>
-        <input type="number" name="waist_circumference" id="waist_circumference" value="<?= $person['waist_circumference'] ?>" required>
-        <br>
+        <label for="waist_size">Waist Circumference</label>
+        <input type="number" name="waist_size" id="waist_size" value="<?= $person['waist_size'] ?>" required>
         <br>
         <input type="submit" value="Update">
     </form>

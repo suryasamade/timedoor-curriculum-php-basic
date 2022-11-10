@@ -1,8 +1,14 @@
 <?php
-    require_once "c3t4_config.php";
+    require_once "class/MySQLConnection.php";
+
+    $config = require_once "c3t4_config.php";
+
+    $connection = new MySQLConnection($config['host'],$config['database'],$config['user']);
+    $connection = $connection->getConnection();
 
     $id = $_GET['id'];
-    $selectQuery = $dbh->prepare("SELECT * FROM persons WHERE id=?");
+
+    $selectQuery = $connection->prepare("SELECT * FROM persons WHERE id=?");
     $selectQuery->execute([$id]);
     $person = $selectQuery->fetch();
 ?>
@@ -19,7 +25,7 @@
     <form action="c3t4_practice_update.php" method="POST">
         <input type="hidden" name="id" value="<?= $id ?>">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="<?= $person['name'] ?>" required>
+        <input type="text" name="name" id="name" value="<?= $person['name'] ?>">
         <br>
         <label for="age">Age</label>
         <input type="number" name="age" id="age" value="<?= $person['age'] ?>" required>
@@ -37,8 +43,8 @@
         <label for="weight">Weight</label>
         <input type="number" name="weight" id="weight" step="0.1" value="<?= $person['weight'] ?>" required>
         <br>
-        <label for="waist_circumference">Waist Circumference</label>
-        <input type="number" name="waist_circumference" id="waist_circumference" value="<?= $person['waist_circumference'] ?>" required>
+        <label for="waist_size">Waist Size</label>
+        <input type="number" name="waist_size" id="waist_size" value="<?= $person['waist_size'] ?>" required>
         <br>
         <br>
         <input type="submit" value="Update">

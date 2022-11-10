@@ -1,33 +1,47 @@
 <?php
     // C2T5 PRACTICE 3
-    class BodyMassIndex
-    {
-        private float $score     = 0;
-        private string $category = "";
+    require_once "MassIndex.php";
 
+    class BodyMassIndex extends MassIndex
+    {
         private float $height = 0;
         private float $weight = 0;
 
         public function __construct(float $height, float $weight)
         {
-            $this->height    = $height;
-            $this->weight = $weight;
+            $this->height = $this->setHeight($height);
+            $this->weight = $this->setWeight($weight);
         }
 
-        public function calculate(): void
+        private function setHeight(float $height): float
+        {
+            if ($height < 0) return 0;
+
+            return $height;
+        }
+
+        private function setWeight(float $weight): float
+        {
+            if ($weight < 0) return 0;
+
+            return $weight;
+        }
+
+        // TEMPATKAN METHOD calculate() DI MAASING" CLASS
+        // DAN HAPUS PENGUNAAN CONSTRUCTOR
+        protected function calculate(string $xx): void
         {
             if ($this->height) {
-                $heightInMeter  = $this->height / 100;
-                $calculate      = $this->weight / ($heightInMeter ** 2);
-                $roundBMIResult = round($calculate, 2);
+                $heightInMeter = $this->height / 100;
+                $result        = $this->weight / ($heightInMeter ** 2);
 
-                $this->score = $roundBMIResult;
+                $this->score = round($result, 2);
             }
 
-            $this->category = $this->category();
+            $this->category = $this->determineCategory();
         }
 
-        private function category(): string
+        private function determineCategory(): string
         {
             if ($this->score >= 40) return "Obese (Class III)";
 
@@ -44,15 +58,5 @@
             if ($this->score >= 16.0) return "Underweight (Moderate thinness)";
 
             return "Underweight (Severe thinness)";
-        }
-
-        public function getScore(): float
-        {
-            return $this->score;
-        }
-
-        public function getCategory(): string
-        {
-            return $this->category;
         }
     }
