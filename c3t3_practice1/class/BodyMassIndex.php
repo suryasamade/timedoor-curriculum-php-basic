@@ -7,32 +7,20 @@
         private float $height = 0;
         private float $weight = 0;
 
-        // public function __construct(float $height, float $weight)
-        // {
-        //     $this->height = $this->setHeight($height);
-        //     $this->weight = $this->setWeight($weight);
-        // }
-
-        private function setHeight(float $height): float
+        private function setHeight(float $height): void
         {
-            if ($height < 0) return 0;
-
-            return $height;
+            $this->height = $height < 0 ? 0 : $height;
         }
 
-        private function setWeight(float $weight): float
+        private function setWeight(float $weight): void
         {
-            if ($weight < 0) return 0;
-
-            return $weight;
+            $this->weight = $weight < 0 ? 0 : $weight;
         }
 
-        // TEMPATKAN METHOD calculate() DI MAASING" CLASS
-        // DAN HAPUS PENGUNAAN CONSTRUCTOR
         public function calculate(float $height, float $weight): void
         {
-            $this->height = $this->setHeight($height);
-            $this->weight = $this->setWeight($weight);
+            $this->setHeight($height);
+            $this->setWeight($weight);
 
             if ($this->height) {
                 $heightInMeter = $this->height / 100;
@@ -63,3 +51,4 @@
             return "Underweight (Severe thinness)";
         }
     }
+?>

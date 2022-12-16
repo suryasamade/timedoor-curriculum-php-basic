@@ -18,39 +18,28 @@
         private float $height    = 0;
         private float $waistSize = 0;
 
-        // public function __construct(float $height, float $waistSize, string $gender)
-        // {
-        //     $this->gender    = $this->setGender($gender);
-        //     $this->height    = $this->setHeight($height);
-        //     $this->waistSize = $this->setWaistSize($waistSize);
-        // }
-
-        private function setGender(string $gender): string
+        private function setGender(string $gender): void
         {
-            if ($gender !== "m" && $gender !== "f") return "m";
-
-            return $gender;
+            $genders = ['m', 'f'];
+            
+            $this->gender = in_array($gender, $genders) ? $gender : "m";
         }
 
-        private function setHeight(float $height): float
+        private function setHeight(float $height): void
         {
-            if ($height < 0) return 0;
-
-            return $height;
+            $this->height = $height < 0 ? 0 : $height;
         }
 
-        private function setWaistSize(float $waistSize): float
+        private function setWaistSize(float $waistSize): void
         {
-            if ($waistSize < 0) return 0;
-
-            return $waistSize;
+            $this->waistSize = $waistSize < 0 ? 0 : $waistSize;
         }
 
         public function calculate(float $height, float $waistSize, string $gender): void
         {
-            $this->gender    = $this->setGender($gender);
-            $this->height    = $this->setHeight($height);
-            $this->waistSize = $this->setWaistSize($waistSize);
+            $this->setGender($gender);
+            $this->setHeight($height);
+            $this->setWaistSize($waistSize);
 
             if ($this->waistSize) {
                 $result = $this->baseIndex() - 20 * ($this->height / $this->waistSize);
@@ -101,3 +90,4 @@
             return $this->categories[5];
         }
     }
+?>
